@@ -8,12 +8,18 @@ Carpeta final y oficial del refactor ADA, agrupada y categorizada para implement
 - `law_functions/domains/`: funciones ADA por dominio.
 - `grafana_wrappers/`: queries finales de variables `var_mlp_ada_*`.
 
+## Decisión sobre función global cross-product
+Sí conviene una global transversal **solo para consolidar estados ya resueltos** (sin queries pesadas).
+Por eso existe `fn_mon_global_from_color_set(...)`: recibe un set de colores y devuelve el color global.
+No depende de ADA ni de tablas/workspaces específicos.
+
 ## Funciones necesarias (LAW)
 ### 1) Cross-product helpers
 - `helpers_cross_product/fn_mon_core_helpers.kql`
   - `fn_mon_status_to_color`
   - `fn_mon_alert_from_job_success`
   - `fn_mon_alert_from_pipeline_success`
+  - `fn_mon_global_from_color_set`
 
 ### 2) ADA-only helpers
 - `helpers_ada/fn_prd_ada_lag_helpers.kql`
@@ -62,4 +68,4 @@ Carpeta final y oficial del refactor ADA, agrupada y categorizada para implement
 - `var_mlp_ada_global` -> `fn_prd_ada_dom_global_status`
 
 ## Nota de límite conocido
-`global` sigue recomponiendo estados de dominios. Con las restricciones actuales (sin materialización/caché compartido), ese costo no se elimina por completo.
+`global` sigue recomponiendo estados de dominios ADA. Con las restricciones actuales (sin materialización/caché compartido), ese costo no se elimina por completo.
