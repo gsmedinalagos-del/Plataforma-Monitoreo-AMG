@@ -5,7 +5,6 @@ Este es el entregable final para implementación del refactor ADA.
 ## Qué contiene
 - `law_functions/`: funciones KQL optimizadas por dominio (mínima consulta necesaria por variable) y helpers reutilizables.
 - `grafana_wrappers/`: wrappers cortos para variables Grafana (`var_mlp_ada_*`) que devuelven `color`.
-- `INVENTORY.md`: mapeo dominio/función/fuente mínima.
 
 ## Qué va en LAW
 Crear/guardar primero (Logs -> Save as function):
@@ -62,3 +61,16 @@ Dominio:
 - `fn_prd_ada_dom_global_status`
 
 No quedan carpetas/iteraciones ADA paralelas fuera de `refactor_ada_optimized/`.
+
+
+## Mapeo variable -> función
+- `var_mlp_ada_dispatch` -> `fn_prd_ada_dom_dispatch_status`
+- `var_mlp_ada_drillit` -> `fn_prd_ada_dom_drillit_status`
+- `var_mlp_ada_blockgrade` -> `fn_prd_ada_dom_blockgrade_status`
+- `var_mlp_ada_plans` -> `fn_prd_ada_dom_plans_status`
+- `var_mlp_ada_pi` -> `fn_prd_ada_dom_pi_status`
+- `var_mlp_ada_meteodata` -> `fn_prd_ada_dom_meteodata_status`
+- `var_mlp_ada_alarm` -> `fn_prd_ada_dom_alarm_status`
+- `var_mlp_ada_front` -> `fn_prd_ada_dom_front_status`
+- `var_mlp_ada_kpi` -> `fn_prd_ada_dom_kpi_status`
+- `var_mlp_ada_global` -> `fn_prd_ada_dom_global_status`
