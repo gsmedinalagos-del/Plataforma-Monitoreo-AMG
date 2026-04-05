@@ -37,6 +37,15 @@ No depende de ADA ni de tablas/workspaces específicos.
 - `domains/fn_prd_ada_dom_kpi_status.kql`
 - `domains/fn_prd_ada_dom_global_status.kql`
 
+
+## Qué va en LAW
+- Todo `law_functions/helpers_cross_product/*.kql`
+- Todo `law_functions/helpers_ada/*.kql`
+- Todo `law_functions/domains/*.kql`
+
+## Qué va en Grafana
+- Todo `grafana_wrappers/var_mlp_ada_*.kql`
+
 ## Variables necesarias (Grafana wrappers)
 - `var_mlp_ada_global.kql`
 - `var_mlp_ada_dispatch.kql`
@@ -74,7 +83,7 @@ No depende de ADA ni de tablas/workspaces específicos.
 Ejecutar antes de desplegar:
 
 ```bash
-python refactor_ada_optimized/validate_kql_references.py
+python refactor_ada_optimized/validate_kql_references.py  # auditoría integral
 ```
 
 El script valida que cada llamada `fn_*` esté definida en `law_functions/` y que wrappers/dominios no apunten a funciones inexistentes.
