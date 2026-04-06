@@ -29,7 +29,8 @@ Este paquete quedó en formato final **1 archivo `.kql` = 1 función** (LAW) y *
 12. `law_functions/domains/fn_prd_ada_dom_alarm_status.kql`
 13. `law_functions/domains/fn_prd_ada_dom_front_status.kql`
 14. `law_functions/domains/fn_prd_ada_dom_kpi_status.kql`
-15. `law_functions/domains/fn_prd_ada_dom_global_status.kql`
+15. `law_functions/domains/fn_prd_ada_dom_kpi_detalle_html.kql`
+16. `law_functions/domains/fn_prd_ada_dom_global_status.kql`
 
 ## Grafana — wrappers a usar (exactos)
 1. `grafana_wrappers/var_mlp_ada_dispatch.kql`
@@ -43,12 +44,39 @@ Este paquete quedó en formato final **1 archivo `.kql` = 1 función** (LAW) y *
 9. `grafana_wrappers/var_mlp_ada_kpi.kql`
 10. `grafana_wrappers/var_mlp_ada_global.kql`
 
+## Parámetros para crear cada función en LAW (firmas)
+
+> Usa exactamente estos parámetros al crear cada función en LAW.
+
+### Cross-product helpers
+- `fn_mon_status_to_color(status:string)`
+- `fn_mon_alert_from_job_success(workspace_id:string, job_name:string, lookback_min:int, startTime:datetime, endTime:datetime)`
+- `fn_mon_alert_from_pipeline_success(workspace_id:string, resource_group:string, lookback_min:int, startTime:datetime, endTime:datetime)`
+- `fn_mon_global_from_color_set(colors:dynamic, alert_color:string = "#E53935", ok_color:string = "#EAF4EA")`
+
+### ADA-only helper
+- `fn_prd_ada_alert_from_tables_lag(tables:dynamic, startTime:datetime, endTime:datetime)`
+
+### Domain functions
+- `fn_prd_ada_dom_dispatch_status(startTime:datetime, endTime:datetime)`
+- `fn_prd_ada_dom_drillit_status(startTime:datetime, endTime:datetime)`
+- `fn_prd_ada_dom_blockgrade_status(startTime:datetime, endTime:datetime)`
+- `fn_prd_ada_dom_pi_status(startTime:datetime, endTime:datetime)`
+- `fn_prd_ada_dom_plans_status(startTime:datetime, endTime:datetime)`
+- `fn_prd_ada_dom_meteodata_status(startTime:datetime, endTime:datetime)`
+- `fn_prd_ada_dom_alarm_status(startTime:datetime, endTime:datetime)`
+- `fn_prd_ada_dom_front_status(startTime:datetime, endTime:datetime)`
+- `fn_prd_ada_dom_kpi_status(startTime:datetime, endTime:datetime)`
+- `fn_prd_ada_dom_kpi_detalle_html(startTime:datetime, endTime:datetime)`
+- `fn_prd_ada_dom_global_status(startTime:datetime, endTime:datetime)`
+
 ## Orden de implementación
 1. Crear en LAW los 4 `helpers_cross_product`.
 2. Crear en LAW el helper ADA-only.
-3. Crear en LAW las 10 funciones de dominio (global al final).
+3. Crear en LAW las 11 funciones de dominio (dejar `fn_prd_ada_dom_global_status` al final).
 4. Reemplazar en Grafana cada variable por su wrapper homónimo.
 
 ## Nota de alcance
 - `fn_prd_ada_dom_global_status` consolida colores de dominios ya resueltos.
+- `fn_prd_ada_dom_kpi_detalle_html` devuelve HTML compacto para panel detalle KPI (solo caídos y sobre umbral).
 - No hay archivos redundantes ni agrupadores legacy en este paquete final.
