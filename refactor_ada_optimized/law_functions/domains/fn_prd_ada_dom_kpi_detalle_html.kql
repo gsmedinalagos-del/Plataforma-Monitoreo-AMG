@@ -38,9 +38,9 @@ let fn_prd_ada_dom_kpi_detalle_html = (startTime:datetime, endTime:datetime) {
 
     // ================= DETALLE KPI =================
     let detalle_kpis =
-        workspace('/subscriptions/c68213bf-7453-4ba4-9aaa-56b822af4c20/resourceGroups/MLP-PRD-RG-ADA/providers/Microsoft.OperationalInsights/workspaces/mlp-prd-law-ada').ContainerAppConsoleLogs_CL
+        fn_src_ada_consolelogs(endTime - totimespan(180m), endTime)
         | where TimeGenerated >= endTime - totimespan(180m) and TimeGenerated < endTime
-        | where ContainerJobName_s startswith "mlp-prd-caj-ada-job" and not(ContainerJobName_s startswith "mlp-prd-caj-ada-job07")
+        | where ContainerJobName_s startswith "mlp-prd-caj-ada-job" and not(ContainerJobName_s startswith "mlp-prd-caj-ada-job07") // filtro temprano por dominio
         | where Log_s startswith '{"fecha_log_UTC":'
         | project ParsedJson = parse_json(Log_s)
         | extend
