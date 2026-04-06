@@ -1,5 +1,5 @@
 let fn_prd_ada_dom_plans_status = (startTime:datetime, endTime:datetime) {
-  let job = fn_mon_alert_from_job_success("/subscriptions/c68213bf-7453-4ba4-9aaa-56b822af4c20/resourceGroups/MLP-PRD-RG-PLANS/providers/Microsoft.OperationalInsights/workspaces/mlp-prd-law-plans", "mlp-prd-caj-plans-job01", 25, startTime, endTime);
+  let job = fn_mon_alert_from_job_success(workspace("/subscriptions/c68213bf-7453-4ba4-9aaa-56b822af4c20/resourceGroups/MLP-PRD-RG-PLANS/providers/Microsoft.OperationalInsights/workspaces/mlp-prd-law-plans").table("ContainerAppSystemLogs_CL"), "mlp-prd-caj-plans-job01", 25, startTime, endTime);
   let lag = fn_prd_ada_alert_from_tables_lag(dynamic([
       "planes_semanales_AXB","planes_semanales_PLANTA_CONCENTRADORA_RECUPERACION_CU","planes_semanales_LEY_CONCENTRADO_CU",
       "planes_semanales_TRANSPORTADO_STMG","planes_semanales_CONCENTRADO_PRODUCIDO","planes_semanales_PLANTA_CONCENTRADORA_LEY_CU",
