@@ -12,8 +12,8 @@ Este paquete quedó en formato final **1 archivo `.kql` = 1 función** (LAW) y *
 
 ### Cross-product helpers
 1. `law_functions/helpers_cross_product/fn_mon_status_to_color.kql`
-2. `law_functions/helpers_cross_product/fn_mon_alert_from_job_success_src.kql`
-3. `law_functions/helpers_cross_product/fn_mon_alert_from_pipeline_success_src.kql`
+2. `law_functions/helpers_cross_product/fn_mon_alert_from_job_success_src_v2.kql`
+3. `law_functions/helpers_cross_product/fn_mon_alert_from_pipeline_success_src_v2.kql`
 4. `law_functions/helpers_cross_product/fn_mon_global_from_color_set.kql`
 
 ### ADA-only helper
@@ -55,8 +55,8 @@ Este paquete quedó en formato final **1 archivo `.kql` = 1 función** (LAW) y *
 
 ### Cross-product helpers
 - `fn_mon_status_to_color(status:string)`
-- `fn_mon_alert_from_job_success_src(src:(TimeGenerated:datetime, JobName_s:string, Log_s:string), job_name:string, lookback_min:int, startTime:datetime, endTime:datetime)`
-- `fn_mon_alert_from_pipeline_success_src(src:(TimeGenerated:datetime, Category:string, ResourceGroup:string, OperationName:string), resource_group:string, lookback_min:int, startTime:datetime, endTime:datetime)`
+- `fn_mon_alert_from_job_success_src_v2(src:(TimeGenerated:datetime, JobName_s:string, Log_s:string), job_name:string, lookback_min:int, startTime:datetime, endTime:datetime)`
+- `fn_mon_alert_from_pipeline_success_src_v2(src:(TimeGenerated:datetime, Category:string, ResourceGroup:string, OperationName:string), resource_group:string, lookback_min:int, startTime:datetime, endTime:datetime)`
 - `fn_mon_global_from_color_set(colors:dynamic, alert_color:string = "#E53935", ok_color:string = "#EAF4EA")`
 
 ### ADA-only helper
@@ -103,5 +103,5 @@ Si pegas el archivo completo como body, LAW puede guardar una función con cuerp
 
 ## Nota técnica (workspace literal)
 `workspace()` exige argumentos literales.
-Por eso los helpers `fn_mon_alert_from_job_success_src` y `fn_mon_alert_from_pipeline_success_src` ahora reciben un `src` tabular y cada dominio pasa `workspace("...").table(...)` de forma explícita.
+Por eso los helpers `fn_mon_alert_from_job_success_src_v2` y `fn_mon_alert_from_pipeline_success_src_v2` ahora reciben un `src` tabular y cada dominio pasa `workspace("...").table(...)` de forma explícita.
 Esto evita el error: `Expecting all arguments to be literals`.
