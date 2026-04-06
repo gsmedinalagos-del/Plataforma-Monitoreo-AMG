@@ -44,6 +44,11 @@ Este paquete quedó en formato final **1 archivo `.kql` = 1 función** (LAW) y *
 9. `grafana_wrappers/var_mlp_ada_kpi.kql`
 10. `grafana_wrappers/var_mlp_ada_global.kql`
 
+## Versión lista para copiar en LAW UI (sin `let ... { }`)
+- Se agregó la carpeta `law_functions_body_only/` con los mismos archivos y estructura que `law_functions/`.
+- Cada archivo en `law_functions_body_only/` contiene **solo el body interno** de la función (sin `let fn_xxx = (...) {` ni `};`).
+- Esta versión está pensada para copiar/pegar directo en el campo **Body** al crear la función manualmente en LAW UI.
+
 ## Parámetros para crear cada función en LAW (firmas)
 
 > Usa exactamente estos parámetros al crear cada función en LAW.
