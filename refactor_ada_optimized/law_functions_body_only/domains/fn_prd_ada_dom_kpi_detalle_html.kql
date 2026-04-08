@@ -29,7 +29,7 @@
         or (CurrentTimeChileHour < 9)
         or (CurrentTimeChileHour >= 19);
     let condicion_6_jueves_2100_a_viernes_1030 =
-        (CurrentTimeChileWeekDay == 4 and CurrentTimeChileHour >= 19)
+        (CurrentTimeChileWeekDay == 4 and CurrentTimeChileHour >= 21)
         or (CurrentTimeChileWeekDay == 5 and CurrentTimeChileHour <= 10)
         or (CurrentTimeChileWeekDay == 5 and CurrentTimeChileHour == 10 and CurrentTimeChileMinute < 30);
     let condicion_7_0900_a_0930 = CurrentTimeChileHour >= 9 and CurrentTimeChileHour < 10;
@@ -106,8 +106,8 @@
                         "ley_cu_plan","ley_concentrado_plan","ley_concentrado_mo_plan",
                         "recuperacion_selectiva_mo_plan","produccion_selectiva_mo_plan",
                         "fase9_plan_completo","fase10_plan_completo","fase11_plan_completo",
-                        "fase12_plan_completo","remanejo_plan_completo",
-                        "mov_mina_plan_completo","extraccion_plan_completo"
+                        "fase12_plan_completo","remanejo_plan_completo","mov_mina_plan_completo","extraccion_plan_completo",
+                        "disponibilidad_perforadoras_plan_hora","metros_perforados_plan_dia","uebd_perforadoras_plan_hora"
                     ),
                     "",
                     KPINoEsperado
@@ -121,9 +121,11 @@
                 condicion_1_SinDatosPermanentes,
                 iff(
                     KPINoEsperado in (
+                        "ley_cu_plan_dia","ley_mo_plan_dia","ley_conc_plan_dia","axb_plan_dia","arsenico_plan_dia","recup_plan_dia","dureza_plan_dia",
                         "ley_cu_bg_stock_real",
                         "alimentacion_chancado_plan",
-                        "make_up_plan"
+                        "make_up_plan",
+                        "identify_problematic_zone"
                     ),
                     "",
                     KPINoEsperado
@@ -192,7 +194,7 @@
             )
 
         // ---- exclusión global
-        | extend KPINoEsperado = iff(KPINoEsperado in ("ejemplo1", "ejemplo2"), "", KPINoEsperado)
+        | extend KPINoEsperado = iff(KPINoEsperado in ("ejemplo1","transporte_stmg_plan","tk13_flujo_real","metros_perforados_plan_dia","disponibilidad_perforadoras_plan_hora","uebd_perforadoras_plan_hora","ley_cu_bg_stock_real","ley_cu_plan_dia","ley_mo_plan_dia","ley_conc_plan_dia","axb_plan_dia","arsenico_plan_dia","recup_plan_dia","dureza_plan_dia"), "", KPINoEsperado)
 
         // ---- limpieza
         | extend KPINoEsperado = iff(KPINoEsperado == " ", "", KPINoEsperado)
