@@ -61,6 +61,12 @@
     | extend KPINoEsperado = iff(KPINoEsperado in (kpis_excluir_si_existen), "", KPINoEsperado)
     | extend KPINoEsperado = iff(KPINoEsperado == " ", "", KPINoEsperado)
     | where KPINoEsperado != ""
+    | summarize inicio_problema = min(fecha_log_UTC), ultimo_error = max(fecha_log_UTC) by KPINoEsperado
+    | extend minutos_sin_datos = toint(round(datetime_diff("second", now(), inicio_problema) / 60.0, 0))
+    | extend minutos_desde_ultimo_error = toint(round(datetime_diff("second", now(), ultimo_error) / 60.0, 0))
+    | extend sigue_caido = minutos_desde_ultimo_error <= 3
+    | extend umbral = iff(KPINoEsperado == "identify_problematic_zone", 30, 20)
+    | where minutos_sin_datos > umbral and sigue_caido == true
     | summarize c = dcount(KPINoEsperado)
     | project c
   );
