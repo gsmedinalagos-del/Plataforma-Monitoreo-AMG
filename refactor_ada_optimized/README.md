@@ -60,6 +60,7 @@ Si ves archivos como `fn_src_ada_*`, `fn_src_pipeline_runs_all` o `fn_src_system
 
 **Capa 1 (workspace-level, reutilizable):**
 - `fn_src_mlp_ws_*` (por ejemplo `fn_src_mlp_ws_ada_systemlogs`, `fn_src_mlp_ws_pisystem_systemlogs`, `fn_src_mlp_ws_dispatch_pipelineruns`).
+- Para workspaces con múltiples tablas, se usa base común `fn_src_mlp_ws_<workspace>_table(tableName, ...)` y wrappers por tabla (system/console) para evitar repetir subscription/RG/workspace.
 
 **Capa 2 (producto/faena-level, agregada):**
 - `fn_src_mlp_pipeline_runs_all(startTime:datetime, endTime:datetime)`
@@ -106,8 +107,6 @@ Si ves archivos como `fn_src_ada_*`, `fn_src_pipeline_runs_all` o `fn_src_system
 - `fn_prd_mlp_ada_dom_kpi_status(startTime:datetime, endTime:datetime)`
 - `fn_prd_mlp_ada_dom_kpi_detalle_html(startTime:datetime, endTime:datetime)`
 - `fn_prd_mlp_ada_dom_global_status(startTime:datetime, endTime:datetime)`
-
-**Qué aportan:** cada dominio transforma señales técnicas en un estado único (color/status) alineado con el tablero.
 
 **Qué aportan:** cada dominio transforma señales técnicas en un estado único (color/status) alineado con el tablero.
 
