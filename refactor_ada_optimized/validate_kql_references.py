@@ -83,6 +83,11 @@ for req in sorted(REQUIRED_WRAPPERS - wrapper_names):
 for req in sorted((REQUIRED_HELPERS | REQUIRED_DOMAINS) - set(func_defs)):
     errors.append(f"Missing required function definition: {req}")
 
+# Naming guardrails: enforce MLP prefix in source files
+for path in (LAW / "sources").glob("fn_src*.kql"):
+    if not path.name.startswith("fn_src_mlp_"):
+        errors.append(f"Non-standard source filename (missing mlp prefix): {path.relative_to(ROOT)}")
+
 # Undefined references
 for path in all_files:
     text = path.read_text(encoding="utf-8")
