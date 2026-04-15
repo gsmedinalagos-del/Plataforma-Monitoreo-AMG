@@ -258,9 +258,9 @@ Se incorporó la migración del bloque de consulta embebido en JSON a funciones 
 - `fn_src_ssag_consolelogs_all(startTime:datetime, endTime:datetime)`
 
 ### Helpers SIROSAG
-- `fn_prd_ssag_eval_ejecucion(job_name:string, endTime:datetime, ventana:timespan, max_fallas:int, operador:string)`
-- `fn_prd_ssag_eval_desfase(job_name:string, endTime:datetime, ventana:timespan, max_minutos:int)`
-- `fn_prd_ssag_eval_desactualizacion(job_name:string, endTime:datetime, ventana:timespan, log_prefix:string, ts_offset:int, ts_length:int, max_minutos:int)`
+- `fn_prd_ssag_eval_ejecucion(job_name:string, endTime:datetime, ventana_min:int, max_fallas:int, operador:string)`
+- `fn_prd_ssag_eval_desfase(job_name:string, endTime:datetime, ventana_min:int, max_minutos:int)`
+- `fn_prd_ssag_eval_desactualizacion(job_name:string, endTime:datetime, ventana_min:int, log_prefix:string, ts_offset:int, ts_length:int, max_minutos:int)`
 
 ### Dominio SIROSAG
 - `fn_prd_ssag_dom_resumen_status(startTime:datetime, endTime:datetime)`
