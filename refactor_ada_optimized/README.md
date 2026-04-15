@@ -109,6 +109,8 @@ Si ves archivos como `fn_src_ada_*`, `fn_src_pipeline_runs_all` o `fn_src_system
 
 **Qué aportan:** cada dominio transforma señales técnicas en un estado único (color/status) alineado con el tablero.
 
+**Qué aportan:** cada dominio transforma señales técnicas en un estado único (color/status) alineado con el tablero.
+
 ---
 
 ## 4) Qué problemas resolvió este refactor
