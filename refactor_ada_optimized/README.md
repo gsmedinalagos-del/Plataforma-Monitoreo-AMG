@@ -246,3 +246,39 @@ Este README representa el estado actual del refactor ADA en la rama de trabajo, 
 - problemas ya resueltos,
 - criterios operacionales,
 - y plan de evolución recomendado.
+
+---
+
+## 12) Extensión SIROSAG MLP (panel Resumen)
+
+Se incorporó la migración del bloque de consulta embebido en JSON a funciones LAW + wrapper para el resumen SIROSAG:
+
+### Sources SIROSAG
+- `fn_src_ssag_systemlogs_all(startTime:datetime, endTime:datetime)`
+- `fn_src_ssag_consolelogs_all(startTime:datetime, endTime:datetime)`
+
+### Helpers SIROSAG
+- `fn_prd_ssag_eval_ejecucion(job_name:string, endTime:datetime, ventana:timespan, max_fallas:int, operador:string)`
+- `fn_prd_ssag_eval_desfase(job_name:string, endTime:datetime, ventana:timespan, max_minutos:int)`
+- `fn_prd_ssag_eval_desactualizacion(job_name:string, endTime:datetime, ventana:timespan, log_prefix:string, ts_offset:int, ts_length:int, max_minutos:int)`
+
+### Dominio SIROSAG
+- `fn_prd_ssag_dom_resumen_status(startTime:datetime, endTime:datetime)`
+
+### Wrapper Grafana
+- `grafana_wrappers/var_mlp_sirosag_resumen.kql`
+
+### Resultado funcional
+La función de dominio devuelve directamente las columnas de negocio del panel:
+- `Ingesta_PI`
+- `Ingesta_PDM_Sag`
+- `Ingesta_Planes`
+- `Salud_ITOT`
+- `Procesamiento_PI`
+- `Procesamiento_Restricciones`
+- `Celdas`
+- `Solidos`
+- `Front`
+- `Alarmas`
+
+Cada columna retorna `Alertar` / `No Alertar`, preservando la semántica del panel original.
