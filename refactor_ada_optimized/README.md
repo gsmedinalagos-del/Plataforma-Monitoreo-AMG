@@ -263,7 +263,7 @@ Se incorporó la migración del bloque de consulta embebido en JSON a funciones 
 - `fn_prd_ssag_eval_desactualizacion(job_name:string, endTime:datetime, ventana_min:int, log_prefix:string, ts_offset:int, ts_length:int, max_minutos:int)`
 
 ### Dominio SIROSAG
-- `fn_prd_ssag_dom_resumen_status(startTime:datetime, endTime:datetime)`
+- `fn_prd_mlp_ssag_dom_resumen_status(startTime:datetime, endTime:datetime)`
 
 ### Wrapper Grafana
 - `grafana_wrappers/var_mlp_sirosag_resumen.kql`
@@ -282,3 +282,30 @@ La función de dominio devuelve directamente las columnas de negocio del panel:
 - `Alarmas`
 
 Cada columna retorna `Alertar` / `No Alertar`, preservando la semántica del panel original.
+
+---
+
+## 13) Extensión MLP NOT PII
+
+Se incorporó la migración de variables NOT PII del dashboard (`ingesta`, `autoloader_uat`, `autoloader_dev`, `difusion_global`) al modelo de funciones LAW + wrappers.
+
+### Sources NOT PII
+- `fn_src_notpii_databricksjobs_all(startTime:datetime, endTime:datetime)`
+- `fn_src_notpii_pisystem_systemlogs(startTime:datetime, endTime:datetime)`
+- `fn_src_notpii_pisystem_consolelogs(startTime:datetime, endTime:datetime)`
+
+### Helpers NOT PII
+- `fn_prd_notpii_ingesta_job04_alert(endTime:datetime)`
+- `fn_prd_notpii_autoloader_alert(jobs_config:dynamic, startTime:datetime, endTime:datetime, step:timespan = 15m)`
+
+### Domains NOT PII
+- `fn_prd_mlp_notpii_dom_ingesta_status(startTime:datetime, endTime:datetime)`
+- `fn_prd_mlp_notpii_dom_autoloader_uat_status(startTime:datetime, endTime:datetime)`
+- `fn_prd_mlp_notpii_dom_autoloader_dev_status(startTime:datetime, endTime:datetime)`
+- `fn_prd_mlp_notpii_dom_difusion_global_status(startTime:datetime, endTime:datetime)`
+
+### Wrappers Grafana NOT PII
+- `grafana_wrappers/var_mlp_notpii_ingesta.kql`
+- `grafana_wrappers/var_mlp_notpii_autoloader_uat.kql`
+- `grafana_wrappers/var_mlp_notpii_autoloader_dev.kql`
+- `grafana_wrappers/var_mlp_notpii_difusion_global.kql`
