@@ -12,8 +12,6 @@ CALL_RE = re.compile(r"\b(fn_[A-Za-z0-9_]+)\s*\(")
 
 REQUIRED_HELPERS = {
     "fn_mon_status_to_color",
-    "fn_mon_alert_from_job_success_src_v2",
-    "fn_mon_alert_from_pipeline_success_src_v2",
     "fn_mon_global_from_color_set",
     "fn_prd_mlp_ada_alert_from_tables_lag",
 }

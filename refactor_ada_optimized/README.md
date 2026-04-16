@@ -105,7 +105,6 @@ Si ves archivos como `fn_src_ada_*`, `fn_src_pipeline_runs_all` o `fn_src_system
 - `fn_prd_mlp_ada_dom_alarm_status(startTime:datetime, endTime:datetime)`
 - `fn_prd_mlp_ada_dom_front_status(startTime:datetime, endTime:datetime)`
 - `fn_prd_mlp_ada_dom_kpi_status(startTime:datetime, endTime:datetime)`
-- `fn_prd_mlp_ada_dom_kpi_detalle_html(startTime:datetime, endTime:datetime)`
 - `fn_prd_mlp_ada_dom_global_status(startTime:datetime, endTime:datetime)`
 
 **Qué aportan:** cada dominio transforma señales técnicas en un estado único (color/status) alineado con el tablero.
@@ -140,7 +139,6 @@ Impacto:
 
 Problema: reglas de KPI “sin datos/no esperado” estaban repetidas y podían divergir entre:
 - `fn_prd_mlp_ada_dom_kpi_status`
-- `fn_prd_mlp_ada_dom_kpi_detalle_html`
 
 Solución aplicada:
 - Centralización en helper único: `fn_prd_mlp_ada_kpi_alert_rows`.
