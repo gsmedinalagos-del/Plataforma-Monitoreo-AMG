@@ -140,6 +140,31 @@ Si ves archivos como `fn_src_ada_*`, `fn_src_pipeline_runs_all` o `fn_src_system
 
 ---
 
+
+## 3.5 ¿Por qué Domain -> Source product/faena-level y no Domain -> Workspace-level directo?
+
+Flujo real de dependencias (de arriba hacia abajo):
+
+`Grafana wrapper -> Domain -> (Helpers) -> Source product/faena-level -> Source workspace-level`
+
+> **Importante:** las funciones `workspace-level` **no** llaman a `product/faena-level`; ocurre al revés.
+
+### Razón de diseño
+1. **Contrato estable para dominios:**
+   los domains consumen una interfaz corta y estable (`fn_src_mlp_systemlogs_all`, `fn_src_mlp_pipeline_runs_all`, etc.) sin acoplarse a qué workspaces participan hoy.
+2. **Un solo punto de cambio:**
+   si cambia un workspace/RG/subscription, se actualiza en `ws_*` o en el agregador, sin tocar todos los domains.
+3. **Menos duplicación entre domains:**
+   varios domains comparten la misma base agregada; ir directo a `ws_*` multiplicaría lógica repetida.
+4. **Testing/validación más simple:**
+   se puede validar capa por capa (ws -> agregador -> domain).
+
+### Cuándo sí conviene Domain -> Workspace-level directo
+- Cuando un domain usa **una sola fuente exclusiva** y no se comparte con otros domains.
+- Cuando quieres optimización extrema y aceptas mayor acoplamiento al workspace.
+
+En este paquete, se usa patrón mixto: por defecto domains consumen `product/faena-level`; los `ws_*` quedan como capa de infraestructura reutilizable.
+
 ## 4) Qué problemas resolvió este refactor
 
 ## 4.1 Ruido de alertas por mantención

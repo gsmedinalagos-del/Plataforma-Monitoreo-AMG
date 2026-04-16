@@ -59,3 +59,10 @@
 ## 5) Regla de limpieza
 
 Si una función no aparece en este inventario y no es referenciada por wrappers/domains/helpers activos, debe considerarse candidata a eliminación.
+
+
+## 6) Dirección de dependencias (arquitectura)
+
+- Correcto: `wrapper -> domain -> helper -> source product/faena -> source workspace`.
+- No aplicado aquí como regla general: `domain -> source workspace` directo.
+- Motivo: mantener contrato estable y evitar duplicación de acceso a datos entre dominios.
