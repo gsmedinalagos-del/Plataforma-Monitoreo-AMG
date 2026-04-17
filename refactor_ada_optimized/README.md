@@ -127,7 +127,7 @@ Si ves archivos como `fn_src_ada_*`, `fn_src_pipeline_runs_all` o `fn_src_system
 - `fn_prd_mlp_notpii_dom_autoloader_dev_status(startTime:datetime, endTime:datetime)`
 - `fn_prd_mlp_notpii_dom_autoloader_uat_status(startTime:datetime, endTime:datetime)`
 - `fn_prd_mlp_notpii_dom_ingesta_status(startTime:datetime, endTime:datetime)`
-- `fn_prd_mlp_notpii_dom_difusion_global_status(startTime:datetime, endTime:datetime)`
+- `fn_prd_mlp_notpii_dom_global_status(startTime:datetime, endTime:datetime)`
 
 ### SIROSAG
 - `fn_prd_mlp_ssag_dom_resumen_status(startTime:datetime, endTime:datetime)`
@@ -374,7 +374,7 @@ Se incorporó la migración de variables NOT PII del dashboard (`ingesta`, `auto
 - `fn_prd_mlp_notpii_dom_ingesta_status(startTime:datetime, endTime:datetime)`
 - `fn_prd_mlp_notpii_dom_autoloader_uat_status(startTime:datetime, endTime:datetime)`
 - `fn_prd_mlp_notpii_dom_autoloader_dev_status(startTime:datetime, endTime:datetime)`
-- `fn_prd_mlp_notpii_dom_difusion_global_status(startTime:datetime, endTime:datetime)`
+- `fn_prd_mlp_notpii_dom_global_status(startTime:datetime, endTime:datetime)`
 
 ### Wrappers Grafana NOT PII
 - `grafana_wrappers/var_mlp_notpii_ingesta.kql`

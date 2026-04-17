@@ -30,7 +30,7 @@ REQUIRED_DOMAINS = {
     "fn_prd_mlp_notpii_dom_autoloader_dev_status",
     "fn_prd_mlp_notpii_dom_autoloader_uat_status",
     "fn_prd_mlp_notpii_dom_ingesta_status",
-    "fn_prd_mlp_notpii_dom_difusion_global_status",
+    "fn_prd_mlp_notpii_dom_global_status",
     "fn_prd_mlp_ssag_dom_resumen_status",
 }
 

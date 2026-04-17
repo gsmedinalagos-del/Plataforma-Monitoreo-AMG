@@ -19,13 +19,13 @@
 | var_mlp_notpii_autoloader_dev | fn_prd_mlp_notpii_dom_autoloader_dev_status |
 | var_mlp_notpii_autoloader_uat | fn_prd_mlp_notpii_dom_autoloader_uat_status |
 | var_mlp_notpii_ingesta | fn_prd_mlp_notpii_dom_ingesta_status |
-| var_mlp_notpii_difusion_global | fn_prd_mlp_notpii_dom_difusion_global_status |
+| var_mlp_notpii_difusion_global | fn_prd_mlp_notpii_dom_global_status |
 | var_mlp_sirosag_resumen | fn_prd_mlp_ssag_dom_resumen_status |
 
 ## 2) Domains activos
 
 - ADA (10): `fn_prd_mlp_ada_dom_dispatch_status`, `fn_prd_mlp_ada_dom_drillit_status`, `fn_prd_mlp_ada_dom_blockgrade_status`, `fn_prd_mlp_ada_dom_pi_status`, `fn_prd_mlp_ada_dom_plans_status`, `fn_prd_mlp_ada_dom_meteodata_status`, `fn_prd_mlp_ada_dom_alarm_status`, `fn_prd_mlp_ada_dom_front_status`, `fn_prd_mlp_ada_dom_kpi_status`, `fn_prd_mlp_ada_dom_global_status`.
-- NOTPII (4): `fn_prd_mlp_notpii_dom_autoloader_dev_status`, `fn_prd_mlp_notpii_dom_autoloader_uat_status`, `fn_prd_mlp_notpii_dom_ingesta_status`, `fn_prd_mlp_notpii_dom_difusion_global_status`.
+- NOTPII (4): `fn_prd_mlp_notpii_dom_autoloader_dev_status`, `fn_prd_mlp_notpii_dom_autoloader_uat_status`, `fn_prd_mlp_notpii_dom_ingesta_status`, `fn_prd_mlp_notpii_dom_global_status`.
 - SIROSAG (1): `fn_prd_mlp_ssag_dom_resumen_status`.
 
 ## 3) Helpers activos
