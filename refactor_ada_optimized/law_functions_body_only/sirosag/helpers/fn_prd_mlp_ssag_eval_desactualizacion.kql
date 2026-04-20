@@ -4,7 +4,11 @@ let fn_prd_mlp_ssag_eval_desactualizacion = (job_name:string, endTime:datetime, 
 <<<<<<< HEAD
         fn_src_mlp_ws_ssag("ContainerAppConsoleLogs_CL", startTime, endTime)
 =======
+<<<<<<< HEAD
+        fn_src_mlp_ws_ssag("ContainerAppConsoleLogs_CL", startTime, endTime)
+=======
         fn_src_mlp_ws_ssag_consolelogs(startTime, endTime)
+>>>>>>> main
 >>>>>>> main
         | where ContainerJobName_s == job_name
         | where Log_s startswith log_prefix

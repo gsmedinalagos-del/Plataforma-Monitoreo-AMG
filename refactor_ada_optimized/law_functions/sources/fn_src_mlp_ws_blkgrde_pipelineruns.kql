@@ -1,4 +1,0 @@
-let fn_src_mlp_ws_blkgrde_pipelineruns = (startTime:datetime, endTime:datetime) {
-  fn_src_mlp_ws_blkgrde("AzureDiagnostics", startTime, endTime)
-  | project TimeGenerated, Category, ResourceGroup, OperationName
-};

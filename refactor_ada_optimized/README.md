@@ -1,14 +1,60 @@
 # Plataforma Monitoreo AMG — Guía funcional (ADA, SIROSAG y NOTPII)
 
 Este README describe **cómo está organizado el paquete KQL**, qué hace cada categoría de funciones y cuáles son las funciones activas por producto.
+# Plataforma Monitoreo AMG — Guía funcional (ADA, SIROSAG y NOTPII)
+
+Este README describe **cómo está organizado el paquete KQL**, qué hace cada categoría de funciones y cuáles son las funciones activas por producto.
 
 ---
 
+## 1) Estructura del paquete
 ## 1) Estructura del paquete
 
 ```text
 refactor_ada_optimized/
 ├─ law_functions/
+│  ├─ ada/
+│  │  ├─ domains/             # Domains de ADA
+│  │  └─ helpers/             # Helpers de ADA
+│  ├─ notpii/
+│  │  ├─ domains/             # Domains de NOTPII
+│  │  └─ helpers/             # Helpers de NOTPII
+│  ├─ sirosag/
+│  │  ├─ domains/             # Domains de SIROSAG
+│  │  └─ helpers/             # Helpers de SIROSAG
+│  ├─ cross_product/
+│  │  └─ helpers/             # Utilidades compartidas
+│  └─ sources/                # Fuentes comunes (mismo nivel que carpetas de productos)
+├─ law_functions_body_only/   # Espejo por producto para pegar body en LAW UI
+└─ grafana_wrappers/          # Variables/paneles de Grafana (entrypoints)
+```
+
+
+### Convención de ubicación
+
+- Todo lo específico de producto vive bajo su carpeta (`ada/`, `notpii/`, `sirosag/`).
+- Dentro de cada producto: `domains/` y `helpers/`.
+- `sources/` queda al mismo nivel de las carpetas de producto para centralizar acceso a datos.
+- Esta misma organización se replica en `law_functions_body_only/`.
+
+### Flujo general de ejecución
+
+`Grafana wrapper -> Domain -> Helper(s) -> Source(s) -> Workspace table`
+
+- **Wrapper**: selecciona 1 domain function.
+- **Domain**: define estado final (normalmente color rojo/verde).
+- **Helper**: aplica reglas de negocio (lag, errores, ventanas, umbrales).
+- **Source**: estandariza lectura de tablas del workspace.
+
+---
+
+## 2) Categorías de funciones
+
+## 2.1 Domains (`fn_prd_mlp_*_dom_*`)
+Funciones de “estado final” consumidas desde Grafana.
+
+## 2.2 Helpers (`fn_prd_mlp_*_*`)
+Funciones de evaluación de reglas: alertas, desactualización, fallas consecutivas, etc.
 │  ├─ ada/
 │  │  ├─ domains/             # Domains de ADA
 │  │  └─ helpers/             # Helpers de ADA
@@ -87,10 +133,6 @@ Funciones compartidas entre productos:
 
 ## 3.3 Sources ADA
 - Base genérica: `fn_src_mlp_ws_ada(tableName, startTime, endTime)`.
-- Wrappers de compatibilidad:
-  - `fn_src_mlp_ws_ada_table`
-  - `fn_src_mlp_ws_ada_systemlogs`
-  - `fn_src_mlp_ws_ada_consolelogs`
 - Relacionadas de pipeline/systemlogs:
   - `fn_src_mlp_ws_dispatch(tableName, ...)`, `fn_src_mlp_ws_drillit(tableName, ...)`, `fn_src_mlp_ws_blkgrde(tableName, ...)`
   - `fn_src_mlp_ws_meteo(tableName, ...)`, `fn_src_mlp_ws_plans(tableName, ...)`
@@ -115,11 +157,8 @@ Ejemplo:
 
 ## 4.3 Sources NOTPII
 - Base genérica PI System: `fn_src_mlp_ws_pisystem(tableName, startTime, endTime)`.
-- Wrapper genérico Databricks por ambiente: `fn_src_mlp_ws_notpii_databricksjobs(env, startTime, endTime)` con `env = dev|uat|all`.
-- Wrappers de compatibilidad:
-  - `fn_src_mlp_ws_pisystem_table`, `fn_src_mlp_ws_pisystem_systemlogs`, `fn_src_mlp_ws_pisystem_consolelogs`
-  - `fn_src_mlp_ws_notpii_databricksjobs_dev`, `fn_src_mlp_ws_notpii_databricksjobs_uat`
-  - `fn_src_mlp_notpii_databricksjobs_all`
+- Base genérica Databricks por ambiente: `fn_src_mlp_ws_notpii_databricksjobs(env, startTime, endTime)` con `env = dev|uat|all`.
+- Agregador product-level: `fn_src_mlp_notpii_databricksjobs_all` (usa `env = all`).
 
 Ejemplos:
 - `fn_src_mlp_ws_pisystem("ContainerAppConsoleLogs_CL", startTime, endTime)`
@@ -139,8 +178,6 @@ Ejemplos:
 
 ## 5.3 Sources SIROSAG
 - Base genérica SSAG: `fn_src_mlp_ws_ssag(tableName, startTime, endTime)`.
-- Wrappers de compatibilidad:
-  - `fn_src_mlp_ws_ssag_table`, `fn_src_mlp_ws_ssag_systemlogs`, `fn_src_mlp_ws_ssag_consolelogs`
 - Fuentes relacionadas usadas por agregación:
   - `fn_src_mlp_ws_pdmsagi(tableName, ...)`, `fn_src_mlp_ws_plans(tableName, ...)`, `fn_src_mlp_ws_pisystem(tableName, ...)`
   - `fn_src_mlp_ssag_systemlogs_all`
@@ -199,22 +236,33 @@ python refactor_ada_optimized/validate_kql_references.py
 python refactor_ada_optimized/validate_kql_references.py
 ```
 
+El validador también verifica que:
+- no reaparezcan wrappers legacy de sources,
+- exista espejo 1:1 entre `law_functions/sources` y `law_functions_body_only/sources`.
+
 
 ## 9) Refactor de Sources — mapping old -> new
 
 ### 9.1 Base genérica por workspace
-- `fn_src_mlp_ws_ada_table` -> `fn_src_mlp_ws_ada(tableName, ...)`
-- `fn_src_mlp_ws_pisystem_table` -> `fn_src_mlp_ws_pisystem(tableName, ...)`
-- `fn_src_mlp_ws_ssag_table` -> `fn_src_mlp_ws_ssag(tableName, ...)`
+- `fn_src_mlp_ws_ada(tableName, startTime, endTime)`
+- `fn_src_mlp_ws_pisystem(tableName, startTime, endTime)`
+- `fn_src_mlp_ws_ssag(tableName, startTime, endTime)`
+- `fn_src_mlp_ws_dispatch(tableName, startTime, endTime)`
+- `fn_src_mlp_ws_drillit(tableName, startTime, endTime)`
+- `fn_src_mlp_ws_blkgrde(tableName, startTime, endTime)`
+- `fn_src_mlp_ws_meteo(tableName, startTime, endTime)`
+- `fn_src_mlp_ws_plans(tableName, startTime, endTime)`
+- `fn_src_mlp_ws_pdmsagi(tableName, startTime, endTime)`
+- `fn_src_mlp_ws_notpii_databricksjobs(env, startTime, endTime)`
 
-### 9.2 Wrappers mantenidos (compatibilidad)
-- Se mantienen nombres históricos (`*_systemlogs`, `*_consolelogs`, `*_pipelineruns`) como wrappers finos para no romper consumidores.
-- Internamente ahora delegan en funciones genéricas por workspace.
+### 9.2 Estado de migración
+- Los consumidores internos (`domains`, `helpers`, `product-level sources`) ya consumen directamente la capa genérica por workspace.
+- Los wrappers legacy fueron retirados para dejar una base limpia y consistente.
 
 ### 9.3 Limitación técnica KQL y tradeoff
 - **Sí**, KQL permite pasar nombre de tabla como parámetro usando `workspace("...").table(tableName)`.
 - **Limitación**: no se puede parametrizar de forma directa el identificador de workspace de manera libre y segura en una sola función universal sin introducir complejidad/ambigüedad.
-- **Solución aplicada**: función genérica por workspace (ADA, PISYSTEM, SSAG, etc.) + wrappers de compatibilidad.
+- **Solución aplicada**: función genérica por workspace (ADA, PISYSTEM, SSAG, etc.) consumida directamente por domains/helpers/sources agregadas.
 - **Tradeoff**: se mantiene algo de superficie API, pero se reduce drásticamente duplicación y se centraliza la parte crítica (workspace + filtro temporal).
 
 ### 9.4 Recomendación final
