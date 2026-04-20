@@ -87,6 +87,10 @@ Funciones compartidas entre productos:
 
 ## 3.3 Sources ADA
 - Base genérica: `fn_src_mlp_ws_ada(tableName, startTime, endTime)`.
+- Wrappers de compatibilidad:
+  - `fn_src_mlp_ws_ada_table`
+  - `fn_src_mlp_ws_ada_systemlogs`
+  - `fn_src_mlp_ws_ada_consolelogs`
 - Relacionadas de pipeline/systemlogs:
   - `fn_src_mlp_ws_dispatch(tableName, ...)`, `fn_src_mlp_ws_drillit(tableName, ...)`, `fn_src_mlp_ws_blkgrde(tableName, ...)`
   - `fn_src_mlp_ws_meteo(tableName, ...)`, `fn_src_mlp_ws_plans(tableName, ...)`
@@ -111,8 +115,11 @@ Ejemplo:
 
 ## 4.3 Sources NOTPII
 - Base genérica PI System: `fn_src_mlp_ws_pisystem(tableName, startTime, endTime)`.
-- Base genérica Databricks por ambiente: `fn_src_mlp_ws_notpii_databricksjobs(env, startTime, endTime)` con `env = dev|uat|all`.
-- Agregador product-level: `fn_src_mlp_notpii_databricksjobs_all` (usa `env = all`).
+- Wrapper genérico Databricks por ambiente: `fn_src_mlp_ws_notpii_databricksjobs(env, startTime, endTime)` con `env = dev|uat|all`.
+- Wrappers de compatibilidad:
+  - `fn_src_mlp_ws_pisystem_table`, `fn_src_mlp_ws_pisystem_systemlogs`, `fn_src_mlp_ws_pisystem_consolelogs`
+  - `fn_src_mlp_ws_notpii_databricksjobs_dev`, `fn_src_mlp_ws_notpii_databricksjobs_uat`
+  - `fn_src_mlp_notpii_databricksjobs_all`
 
 Ejemplos:
 - `fn_src_mlp_ws_pisystem("ContainerAppConsoleLogs_CL", startTime, endTime)`
@@ -132,6 +139,8 @@ Ejemplos:
 
 ## 5.3 Sources SIROSAG
 - Base genérica SSAG: `fn_src_mlp_ws_ssag(tableName, startTime, endTime)`.
+- Wrappers de compatibilidad:
+  - `fn_src_mlp_ws_ssag_table`, `fn_src_mlp_ws_ssag_systemlogs`, `fn_src_mlp_ws_ssag_consolelogs`
 - Fuentes relacionadas usadas por agregación:
   - `fn_src_mlp_ws_pdmsagi(tableName, ...)`, `fn_src_mlp_ws_plans(tableName, ...)`, `fn_src_mlp_ws_pisystem(tableName, ...)`
   - `fn_src_mlp_ssag_systemlogs_all`
@@ -194,25 +203,18 @@ python refactor_ada_optimized/validate_kql_references.py
 ## 9) Refactor de Sources — mapping old -> new
 
 ### 9.1 Base genérica por workspace
-- `fn_src_mlp_ws_ada(tableName, startTime, endTime)`
-- `fn_src_mlp_ws_pisystem(tableName, startTime, endTime)`
-- `fn_src_mlp_ws_ssag(tableName, startTime, endTime)`
-- `fn_src_mlp_ws_dispatch(tableName, startTime, endTime)`
-- `fn_src_mlp_ws_drillit(tableName, startTime, endTime)`
-- `fn_src_mlp_ws_blkgrde(tableName, startTime, endTime)`
-- `fn_src_mlp_ws_meteo(tableName, startTime, endTime)`
-- `fn_src_mlp_ws_plans(tableName, startTime, endTime)`
-- `fn_src_mlp_ws_pdmsagi(tableName, startTime, endTime)`
-- `fn_src_mlp_ws_notpii_databricksjobs(env, startTime, endTime)`
+- `fn_src_mlp_ws_ada_table` -> `fn_src_mlp_ws_ada(tableName, ...)`
+- `fn_src_mlp_ws_pisystem_table` -> `fn_src_mlp_ws_pisystem(tableName, ...)`
+- `fn_src_mlp_ws_ssag_table` -> `fn_src_mlp_ws_ssag(tableName, ...)`
 
-### 9.2 Estado de migración
-- Los consumidores internos (`domains`, `helpers`, `product-level sources`) ya consumen directamente la capa genérica por workspace.
-- Los wrappers legacy fueron retirados para dejar una base limpia y consistente.
+### 9.2 Wrappers mantenidos (compatibilidad)
+- Se mantienen nombres históricos (`*_systemlogs`, `*_consolelogs`, `*_pipelineruns`) como wrappers finos para no romper consumidores.
+- Internamente ahora delegan en funciones genéricas por workspace.
 
 ### 9.3 Limitación técnica KQL y tradeoff
 - **Sí**, KQL permite pasar nombre de tabla como parámetro usando `workspace("...").table(tableName)`.
 - **Limitación**: no se puede parametrizar de forma directa el identificador de workspace de manera libre y segura en una sola función universal sin introducir complejidad/ambigüedad.
-- **Solución aplicada**: función genérica por workspace (ADA, PISYSTEM, SSAG, etc.) consumida directamente por domains/helpers/sources agregadas.
+- **Solución aplicada**: función genérica por workspace (ADA, PISYSTEM, SSAG, etc.) + wrappers de compatibilidad.
 - **Tradeoff**: se mantiene algo de superficie API, pero se reduce drásticamente duplicación y se centraliza la parte crítica (workspace + filtro temporal).
 
 ### 9.4 Recomendación final

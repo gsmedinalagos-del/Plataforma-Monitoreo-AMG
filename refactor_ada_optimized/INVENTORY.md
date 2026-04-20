@@ -76,7 +76,26 @@ El mismo layout aplica para `law_functions_body_only/`.
 - `fn_src_mlp_ws_pdmsagi(tableName, startTime, endTime)`
 - `fn_src_mlp_ws_notpii_databricksjobs(env, startTime, endTime)`
 
-### 4.2 Product-level agregadas
+### 4.2 Wrappers de compatibilidad (legacy estable)
+- `fn_src_mlp_ws_ada_table`
+- `fn_src_mlp_ws_ada_systemlogs`
+- `fn_src_mlp_ws_ada_consolelogs`
+- `fn_src_mlp_ws_pisystem_table`
+- `fn_src_mlp_ws_pisystem_systemlogs`
+- `fn_src_mlp_ws_pisystem_consolelogs`
+- `fn_src_mlp_ws_ssag_table`
+- `fn_src_mlp_ws_ssag_systemlogs`
+- `fn_src_mlp_ws_ssag_consolelogs`
+- `fn_src_mlp_ws_dispatch_pipelineruns`
+- `fn_src_mlp_ws_drillit_pipelineruns`
+- `fn_src_mlp_ws_blkgrde_pipelineruns`
+- `fn_src_mlp_ws_meteo_systemlogs`
+- `fn_src_mlp_ws_plans_systemlogs`
+- `fn_src_mlp_ws_pdmsagi_systemlogs`
+- `fn_src_mlp_ws_notpii_databricksjobs_dev`
+- `fn_src_mlp_ws_notpii_databricksjobs_uat`
+
+### 4.3 Product-level agregadas
 - `fn_src_mlp_pipeline_runs_all`
 - `fn_src_mlp_systemlogs_all`
 - `fn_src_mlp_ssag_systemlogs_all`
