@@ -1,0 +1,28 @@
+# Source Catalog (KQL)
+
+Catálogo estático de sources activos (`fn_src_mlp_*`) en `law_functions/sources`.
+
+| Source | Tipo de source | Workspace lógico | Tabla(s) consultadas | Producto asociado | Consumidores directos | Domains/helpers impactados | Criticidad sugerida | Observación funcional | Recomendación de mantenimiento |
+|---|---|---|---|---|---|---|---|---|---|
+| `fn_src_mlp_ws_ada` | workspace genérico | `mlp-prd-law-ada` | `tableName` (ej: `ContainerAppConsoleLogs_CL`, `ContainerAppSystemLogs_CL`, `AppServiceConsoleLogs`) | ADA | `fn_src_mlp_systemlogs_all`, `fn_prd_mlp_ada_dom_front_status`, `fn_prd_mlp_ada_alert_from_dispatch_nrt_logs`, `fn_prd_mlp_ada_kpi_alert_rows`, `fn_prd_mlp_ada_lag_helpers` | Front, KPI, Lag, Dispatch NRT, ADA systemlogs | Alta | Source base ADA de mayor uso. | Mantener estable; cualquier cambio debe validar consumers ADA. |
+| `fn_src_mlp_ws_dataplatform` | workspace genérico | `ams-dev-dataplatform-laws` | `tableName` (actual crítico: `Logs_MLP_ADA_CL`) | ADA | `fn_prd_mlp_ada_dom_blockgrade_status`, `fn_prd_mlp_ada_kpi_alert_rows` | Bloque `en_mantencion` (blockgrade + KPI) | Alta | Se agregó para corregir asignación de workspace de `Logs_MLP_ADA_CL`. | Mantener explícito por workspace real para evitar falsos OK/ALERT. |
+| `fn_src_mlp_ws_pisystem` | workspace genérico | `mlp-prd-law-pisystem` | `tableName` (`ContainerAppSystemLogs_CL`, `ContainerAppConsoleLogs_CL`) | ADA / NOTPII / SIROSAG | `fn_src_mlp_systemlogs_all`, `fn_src_mlp_ssag_systemlogs_all`, `fn_prd_mlp_notpii_ingesta_job04_alert` | PI status, ingesta job04, SIROSAG evals | Alta | Dependencia transversal multi-producto. | Priorizar monitoreo de latencia/calidad para este source. |
+| `fn_src_mlp_ws_ssag` | workspace genérico | `mlp-prd-law-ssag` | `tableName` | SIROSAG | `fn_src_mlp_ssag_systemlogs_all`, `fn_prd_mlp_ssag_eval_desactualizacion` | Desactualización SIROSAG | Media | Source focalizado en SIROSAG. | Mantener con contrato de columnas en helpers SSAG. |
+| `fn_src_mlp_ws_dispatch` | workspace genérico | `mlp-prd-law-dispatch` | `tableName` (hoy `AzureDiagnostics`) | ADA (vía agregador) | `fn_src_mlp_pipeline_runs_all` | Drillit/Blockgrade status | Media | Source de soporte de pipelines. | Mantener simple, sin lógica de dominio. |
+| `fn_src_mlp_ws_drillit` | workspace genérico | `mlp-prd-law-drillit` | `tableName` (hoy `AzureDiagnostics`) | ADA (vía agregador) | `fn_src_mlp_pipeline_runs_all` | Drillit status | Media | Source de soporte de pipelines. | Mantener simple, sin lógica de dominio. |
+| `fn_src_mlp_ws_blkgrde` | workspace genérico | `mlp-prd-law-blkgrde` | `tableName` (hoy `AzureDiagnostics`) | ADA (vía agregador) | `fn_src_mlp_pipeline_runs_all` | Blockgrade status | Media | Source de soporte de pipelines. | Mantener simple, sin lógica de dominio. |
+| `fn_src_mlp_ws_meteo` | workspace genérico | `mlp-prd-law-meteo` | `tableName` (hoy `ContainerAppSystemLogs_CL`) | ADA (vía agregador) | `fn_src_mlp_systemlogs_all` | Meteodata status | Media | Dependencia indirecta vía agregador ADA. | Mantener contrato de campos usados en agregador. |
+| `fn_src_mlp_ws_plans` | workspace genérico | `mlp-prd-law-plans` | `tableName` (hoy `ContainerAppSystemLogs_CL`) | ADA / SIROSAG (vía agregadores) | `fn_src_mlp_systemlogs_all`, `fn_src_mlp_ssag_systemlogs_all` | Plans status + SIROSAG | Alta | Source compartido por dos agregadores. | Monitorear cambios de formato en system logs. |
+| `fn_src_mlp_ws_pdmsagi` | workspace genérico | `mlp-prd-law-pdmsagi` | `tableName` (hoy `ContainerAppSystemLogs_CL`) | SIROSAG (vía agregador) | `fn_src_mlp_ssag_systemlogs_all` | SIROSAG resumen/evaluaciones | Media | Dependencia focalizada en SIROSAG. | Mantener con seguimiento de frescura de datos. |
+| `fn_src_mlp_ws_notpii_databricksjobs` | workspace genérico | `ams-dev-dataplatform-laws` + `ams-uat-dataplatform-laws` | `DatabricksJobs` | NOTPII | `fn_prd_mlp_notpii_autoloader_alert` | Autoloader dev/uat/global | Alta | Source crítico para ejecuciones de jobs. | Mantener enum `env` controlado (`dev|uat|all`). |
+| `fn_src_mlp_pipeline_runs_all` | agregador product-level | multi (`dispatch`,`drillit`,`blkgrde`) | `AzureDiagnostics` (proyección común) | ADA | `fn_prd_mlp_ada_dom_blockgrade_status`, `fn_prd_mlp_ada_dom_drillit_status` | Domains blockgrade/drillit | Alta | Agregador crítico de pipelines ADA. | Mantener interfaz estable; validar contratos de proyección. |
+| `fn_src_mlp_systemlogs_all` | agregador product-level | multi (`ada`,`meteo`,`pisystem`,`plans`) | `ContainerAppSystemLogs_CL` (proyección común) | ADA | `fn_prd_mlp_ada_dom_dispatch_status`, `fn_prd_mlp_ada_dom_pi_status`, `fn_prd_mlp_ada_dom_alarm_status`, `fn_prd_mlp_ada_dom_meteodata_status`, `fn_prd_mlp_ada_dom_plans_status`, `fn_prd_mlp_ada_dom_kpi_status` | 6 domains ADA | Alta | Source más compartido de ADA. | Prioridad alta de observabilidad operativa. |
+| `fn_src_mlp_ssag_systemlogs_all` | agregador product-level | multi (`ssag`,`plans`,`pdmsagi`,`pisystem`) | `ContainerAppSystemLogs_CL` | SIROSAG | `fn_prd_mlp_ssag_eval_ejecucion`, `fn_prd_mlp_ssag_eval_desfase` | Evals de ejecución/desfase | Alta | Agregador central de SIROSAG. | Mantener y monitorear disponibilidad por workspace componente. |
+
+## Resumen
+
+- Total sources activos: **14**.
+- Workspace-genéricos: **11**.
+- Agregadores product-level: **3**.
+- Más críticos por impacto: `fn_src_mlp_systemlogs_all`, `fn_src_mlp_ws_ada`, `fn_src_mlp_ws_pisystem`, `fn_src_mlp_ws_dataplatform`.
+
