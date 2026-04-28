@@ -112,7 +112,7 @@ Ejemplo:
 ## 4.3 Sources NOTPII
 - Base genérica PI System: `fn_src_mlp_ws_pisystem(tableName, startTime, endTime)`.
 - Base genérica Databricks por ambiente: `fn_src_mlp_ws_notpii_databricksjobs(env, startTime, endTime)` con `env = dev|uat|all`.
-- Agregador product-level: `fn_src_mlp_notpii_databricksjobs_all` (usa `env = all`).
+- Consumo directo recomendado: `fn_src_mlp_ws_notpii_databricksjobs("all", startTime, endTime)`.
 
 Ejemplos:
 - `fn_src_mlp_ws_pisystem("ContainerAppConsoleLogs_CL", startTime, endTime)`
@@ -221,9 +221,9 @@ python refactor_ada_optimized/check_conflict_markers.py
 - Los wrappers legacy fueron retirados para dejar una base limpia y consistente.
 
 ### 9.3 Limitación técnica KQL y tradeoff
-- **Sí**, KQL permite pasar nombre de tabla como parámetro usando `workspace("...").table(tableName)`.
+- **Sí**, KQL permite pasar nombre de tabla como parámetro usando API de tabla parametrizada en KQL (a través de funciones source).
 - **Limitación**: no se puede parametrizar de forma directa el identificador de workspace de manera libre y segura en una sola función universal sin introducir complejidad/ambigüedad.
-- **Solución aplicada**: función genérica por workspace (ADA, PISYSTEM, SSAG, etc.) consumida directamente por domains/helpers/sources agregadas.
+- **Solución aplicada**: función genérica por entorno/log-analytics (ADA, PISYSTEM, SSAG, etc.) consumida directamente por domains/helpers/sources agregadas.
 - **Tradeoff**: se mantiene algo de superficie API, pero se reduce drásticamente duplicación y se centraliza la parte crítica (workspace + filtro temporal).
 
 ### 9.4 Recomendación final
