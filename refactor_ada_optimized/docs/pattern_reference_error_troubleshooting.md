@@ -16,7 +16,7 @@ Cuando la consulta que invoca esas funciones no declara/adjunta esos recursos de
 
 ## Workspaces requeridos (referencia rápida)
 
-- `fn_src_mlp_ws_ada` → usa `table(tableName)` en el workspace de ejecución (no fuerza resource id cross-workspace).
+- `fn_src_mlp_ws_ada` → `/subscriptions/c68213bf-7453-4ba4-9aaa-56b822af4c20/resourceGroups/MLP-PRD-RG-ADA/providers/Microsoft.OperationalInsights/workspaces/mlp-prd-law-ada`
 - `fn_src_mlp_ws_dataplatform` → `/subscriptions/0d996eb2-802f-4ef8-8ae6-d385c74da7e6/resourceGroups/ams-dev-dataplatform-rg/providers/Microsoft.OperationalInsights/workspaces/ams-dev-dataplatform-laws`
 - `fn_src_mlp_ws_pisystem` → `/subscriptions/c68213bf-7453-4ba4-9aaa-56b822af4c20/resourceGroups/MLP-PRD-RG-PISYSTEM/providers/Microsoft.OperationalInsights/workspaces/mlp-prd-law-pisystem`
 - `fn_src_mlp_ws_dispatch` → `/subscriptions/c68213bf-7453-4ba4-9aaa-56b822af4c20/resourceGroups/MLP-PRD-RG-DISPATCH/providers/Microsoft.OperationalInsights/workspaces/mlp-prd-law-dispatch`
