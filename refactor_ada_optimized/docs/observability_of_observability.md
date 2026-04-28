@@ -11,8 +11,8 @@ Alcance: análisis estático del repositorio, sin consultar Azure.
 
 ## Sources más consumidos
 
-1. `fn_src_mlp_systemlogs_all` (6)
-2. `fn_src_mlp_ws_ada` (5)
+1. `fn_src_mlp_ws_ada` (6)
+2. `fn_src_mlp_systemlogs_all` (5)
 3. `fn_src_mlp_ws_pisystem` (3)
 4. `fn_src_mlp_pipeline_runs_all` (2)
 5. `fn_src_mlp_ssag_systemlogs_all` (2)
@@ -36,8 +36,8 @@ Alcance: análisis estático del repositorio, sin consultar Azure.
 
 ## Puntos críticos de falla sugeridos
 
-1. `fn_src_mlp_systemlogs_all` (afecta 6 domains ADA)
-2. `fn_src_mlp_ws_ada` (helpers/domains ADA + agregador)
+1. `fn_src_mlp_ws_ada` (helpers/domains ADA + agregador)
+2. `fn_src_mlp_systemlogs_all` (afecta 5 domains ADA)
 3. `fn_src_mlp_ws_dataplatform` (afecta lógica `en_mantencion` en blockgrade/KPI)
 4. `fn_src_mlp_ws_pisystem` (impacto transversal ADA/NOTPII/SIROSAG)
 

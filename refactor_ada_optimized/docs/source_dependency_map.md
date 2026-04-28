@@ -14,7 +14,7 @@
 - `fn_src_mlp_ws_pdmsagi` → `fn_src_mlp_ssag_systemlogs_all`
 - `fn_src_mlp_ws_notpii_databricksjobs` → `fn_prd_mlp_notpii_autoloader_alert`
 - `fn_src_mlp_pipeline_runs_all` → `fn_prd_mlp_ada_dom_blockgrade_status`, `fn_prd_mlp_ada_dom_drillit_status`
-- `fn_src_mlp_systemlogs_all` → `fn_prd_mlp_ada_dom_dispatch_status`, `fn_prd_mlp_ada_dom_pi_status`, `fn_prd_mlp_ada_dom_alarm_status`, `fn_prd_mlp_ada_dom_meteodata_status`, `fn_prd_mlp_ada_dom_plans_status`, `fn_prd_mlp_ada_dom_kpi_status`
+- `fn_src_mlp_systemlogs_all` → `fn_prd_mlp_ada_dom_pi_status`, `fn_prd_mlp_ada_dom_alarm_status`, `fn_prd_mlp_ada_dom_meteodata_status`, `fn_prd_mlp_ada_dom_plans_status`, `fn_prd_mlp_ada_dom_kpi_status`
 - `fn_src_mlp_ssag_systemlogs_all` → `fn_prd_mlp_ssag_eval_ejecucion`, `fn_prd_mlp_ssag_eval_desfase`
 
 ## 2) Producto → sources usados
@@ -27,7 +27,7 @@
 
 ### ADA
 - `fn_prd_mlp_ada_dom_alarm_status` → `fn_src_mlp_systemlogs_all`
-- `fn_prd_mlp_ada_dom_dispatch_status` → `fn_src_mlp_systemlogs_all`
+- `fn_prd_mlp_ada_dom_dispatch_status` → `fn_src_mlp_ws_ada`
 - `fn_prd_mlp_ada_dom_drillit_status` → `fn_src_mlp_pipeline_runs_all`
 - `fn_prd_mlp_ada_dom_blockgrade_status` → `fn_src_mlp_pipeline_runs_all`, `fn_src_mlp_ws_dataplatform`
 - `fn_prd_mlp_ada_dom_front_status` → `fn_src_mlp_ws_ada`
@@ -50,8 +50,8 @@
 
 ## 4) Sources más compartidos
 
-1. `fn_src_mlp_systemlogs_all` (6 consumidores)
-2. `fn_src_mlp_ws_ada` (5 consumidores)
+1. `fn_src_mlp_ws_ada` (6 consumidores)
+2. `fn_src_mlp_systemlogs_all` (5 consumidores)
 3. `fn_src_mlp_ws_pisystem` (3 consumidores)
 4. `fn_src_mlp_pipeline_runs_all` (2 consumidores)
 5. `fn_src_mlp_ssag_systemlogs_all` (2 consumidores)
