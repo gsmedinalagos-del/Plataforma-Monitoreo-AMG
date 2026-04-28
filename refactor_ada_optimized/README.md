@@ -195,6 +195,12 @@ El validador también verifica que:
 - exista espejo 1:1 entre `law_functions/sources` y `law_functions_body_only/sources`,
 - no existan markers de merge-conflict (`<<<<<<<`, `=======`, `>>>>>>>`) en KQL.
 
+Chequeo global recomendado (todo el repositorio):
+
+```bash
+python refactor_ada_optimized/check_conflict_markers.py
+```
+
 
 ## 9) Refactor de Sources — mapping old -> new
 

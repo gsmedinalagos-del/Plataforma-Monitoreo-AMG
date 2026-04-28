@@ -1,11 +1,11 @@
   let job06_ok = toscalar(
-    fn_src_systemlogs_all(startTime - 35m, endTime)
+    fn_src_mlp_systemlogs_all(startTime - 35m, endTime)
     | where JobName_s == "mlp-prd-caj-ada-job06" // filtro temprano por dominio
     | where Log_s contains "has successfully completed"
     | count
     ) > 0;
 let job07_ok = toscalar(
-    fn_src_systemlogs_all(startTime - 10m, endTime)
+    fn_src_mlp_systemlogs_all(startTime - 10m, endTime)
     | where JobName_s == "mlp-prd-caj-ada-job07" // filtro temprano por dominio
     | where Log_s contains "has successfully completed"
     | count

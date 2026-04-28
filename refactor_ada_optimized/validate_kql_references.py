@@ -10,6 +10,7 @@ WRAPPERS = ROOT / "grafana_wrappers"
 
 DEF_RE = re.compile(r"\blet\s+(fn_[A-Za-z0-9_]+)\s*=\s*\(")
 CALL_RE = re.compile(r"\b(fn_[A-Za-z0-9_]+)\s*\(")
+CONFLICT_RE = re.compile(r"^(<<<<<<< .+|=======|>>>>>>> .+)$", re.M)
 
 REQUIRED_HELPERS = {
     "fn_mon_status_to_color",
@@ -113,11 +114,11 @@ for extra in sorted(body_source_files - law_source_files):
 # Merge-conflict marker guard
 for path in LAW.rglob("*.kql"):
     text = path.read_text(encoding="utf-8")
-    if "<<<<<<<" in text or ">>>>>>>" in text or "=======" in text:
+    if CONFLICT_RE.search(text):
         errors.append(f"Merge-conflict marker detected in {path.relative_to(ROOT)}")
 for path in BODY.rglob("*.kql"):
     text = path.read_text(encoding="utf-8")
-    if "<<<<<<<" in text or ">>>>>>>" in text or "=======" in text:
+    if CONFLICT_RE.search(text):
         errors.append(f"Merge-conflict marker detected in {path.relative_to(ROOT)}")
 
 # Undefined references
