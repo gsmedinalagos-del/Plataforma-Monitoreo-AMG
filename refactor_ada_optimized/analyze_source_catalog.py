@@ -22,6 +22,7 @@ DEF_RE = re.compile(r"\blet\s+(fn_src_mlp_[A-Za-z0-9_]+)\s*=\s*\(")
 SRC_CALL_RE = re.compile(r"\b(fn_src_mlp_[A-Za-z0-9_]+)\s*\(")
 TABLE_LITERAL_RE = re.compile(r'\.table\("([A-Za-z0-9_]+)"\)')
 WS_NAME_RE = re.compile(r"workspaces/([a-z0-9-]+)")
+WS_REF_RE = re.compile(r'workspace\("([^"]+)"\)')
 
 
 @dataclass
@@ -84,6 +85,7 @@ def role_from_path(path: Path) -> str:
 
 def main() -> None:
     source_infos: dict[str, SourceInfo] = {}
+    source_workspace_refs: dict[str, list[str]] = {}
     all_kql = sorted(LAW.rglob("*.kql"))
 
     for path in sorted(SOURCES_DIR.glob("fn_src_mlp_*.kql")):
@@ -99,6 +101,7 @@ def main() -> None:
             workspace_logical=infer_workspace_logical(name, text),
             tables=infer_tables(name, text),
         )
+        source_workspace_refs[name] = sorted(set(WS_REF_RE.findall(text)))
 
     source_consumers: dict[str, list[Path]] = defaultdict(list)
     consumer_sources: dict[Path, set[str]] = defaultdict(set)
@@ -137,6 +140,14 @@ def main() -> None:
         print(f"- {name}: {len(consumers)}")
         for c in consumers:
             print(f"  - {c}")
+
+    print("\nRequired workspace references by source")
+    for name in sorted(source_infos):
+        refs = source_workspace_refs.get(name, [])
+        if refs:
+            print(f"- {name}:")
+            for r in refs:
+                print(f"  - {r}")
 
     print("\nProduct -> sources")
     for product in sorted(product_sources):

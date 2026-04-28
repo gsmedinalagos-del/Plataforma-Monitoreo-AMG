@@ -35,7 +35,7 @@ Esto replica la regla de alto nivel usada en el panel: desactualización de tabl
 
 ## Observaciones
 
-- La capa actual usa sources (`fn_src_mlp_systemlogs_all`, `fn_src_mlp_ws_ada`) y no usa accesos directos a accesos directos a workspaces fuera de `/sources`.
+- La capa actual usa sources (`fn_src_mlp_systemlogs_all`, `fn_src_mlp_ws_ada`) y no usa accesos directos a workspaces fuera de `/sources`.
 - No se aplicaron cambios funcionales en esta validación, porque la lógica ya está alineada con la intención del panel.
 
 ## Comandos ejecutados
