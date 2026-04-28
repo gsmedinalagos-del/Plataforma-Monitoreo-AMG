@@ -41,11 +41,11 @@ def infer_workspace_logical(name: str, text: str) -> str:
     if name.startswith("fn_src_mlp_ws_"):
         return name.removeprefix("fn_src_mlp_ws_")
     if "pipeline_runs" in name:
-        return "multi-workspace (dispatch/drillit/blkgrde)"
+        return "multi-ws: dispatch/drillit/blkgrde"
     if "ssag_systemlogs" in name:
-        return "multi-workspace (ssag/plans/pdmsagi/pisystem)"
+        return "multi-ws: ssag/plans/pdmsagi/pisystem"
     if "systemlogs_all" in name:
-        return "multi-workspace (ada/meteo/pisystem/plans)"
+        return "multi-ws: ada/meteo/pisystem/plans"
     ws_names = sorted(set(WS_NAME_RE.findall(text)))
     return ", ".join(ws_names) if ws_names else "n/a"
 

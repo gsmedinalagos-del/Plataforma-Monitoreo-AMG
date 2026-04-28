@@ -7,7 +7,7 @@ let fn_prd_mlp_ada_kpi_alert_rows = (startTime:datetime, endTime:datetime) {
 
     let en_mantencion =
         toscalar(
-            fn_src_mlp_ws_ada("Logs_MLP_ADA_CL", startTime, endTime)
+            fn_src_mlp_ws_dataplatform("Logs_MLP_ADA_CL", startTime, endTime)
             | where product_origin == "DISPATCH_CONDICION_OPERACIONAL"
             | top 1 by TimeGenerated desc
             | extend CH1 = tostring(detail["CH-1"]), CH2 = tostring(detail["CH-02"])

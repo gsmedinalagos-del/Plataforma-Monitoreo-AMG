@@ -206,6 +206,7 @@ python refactor_ada_optimized/check_conflict_markers.py
 
 ### 9.1 Base genérica por workspace
 - `fn_src_mlp_ws_ada(tableName, startTime, endTime)`
+- `fn_src_mlp_ws_dataplatform(tableName, startTime, endTime)`
 - `fn_src_mlp_ws_pisystem(tableName, startTime, endTime)`
 - `fn_src_mlp_ws_ssag(tableName, startTime, endTime)`
 - `fn_src_mlp_ws_dispatch(tableName, startTime, endTime)`

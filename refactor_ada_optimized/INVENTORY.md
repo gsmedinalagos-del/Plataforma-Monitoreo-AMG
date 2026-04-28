@@ -66,6 +66,7 @@ El mismo layout aplica para `law_functions_body_only/`.
 
 ### 4.1 Base genérica por workspace
 - `fn_src_mlp_ws_ada(tableName, startTime, endTime)`
+- `fn_src_mlp_ws_dataplatform(tableName, startTime, endTime)`
 - `fn_src_mlp_ws_pisystem(tableName, startTime, endTime)`
 - `fn_src_mlp_ws_ssag(tableName, startTime, endTime)`
 - `fn_src_mlp_ws_dispatch(tableName, startTime, endTime)`
