@@ -112,7 +112,7 @@ Ejemplo:
 ## 4.3 Sources NOTPII
 - Base genérica PI System: `fn_src_mlp_ws_pisystem(tableName, startTime, endTime)`.
 - Base genérica Databricks por ambiente: `fn_src_mlp_ws_notpii_databricksjobs(env, startTime, endTime)` con `env = dev|uat|all`.
-- Agregador product-level: `fn_src_mlp_notpii_databricksjobs_all` (usa `env = all`).
+- Consumo directo recomendado: `fn_src_mlp_ws_notpii_databricksjobs("all", startTime, endTime)`.
 
 Ejemplos:
 - `fn_src_mlp_ws_pisystem("ContainerAppConsoleLogs_CL", startTime, endTime)`
