@@ -2,6 +2,7 @@ let fn_prd_mlp_ssag_eval_desactualizacion = (job_name:string, endTime:datetime, 
     let startTime = endTime - totimespan(ventana_min * 60s);
     let last_row =
         fn_src_mlp_ws_ssag("ContainerAppConsoleLogs_CL", startTime, endTime)
+
         | where ContainerJobName_s == job_name
         | where Log_s startswith log_prefix
         | top 1 by TimeGenerated desc

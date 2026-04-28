@@ -3,6 +3,7 @@ let fn_prd_mlp_notpii_ingesta_job04_alert = (endTime:datetime) {
         union
         (
             fn_src_mlp_ws_pisystem("ContainerAppSystemLogs_CL", endTime - 20m, endTime)
+
             | where JobName_s == "mlp-prd-caj-pisystem-job04"
             | project ejecucion = bin(TimeGenerated, 5m), nombreReal = "mlp-prd-caj-pisystem-job04_ejecucion", status = "n"
         ),
@@ -14,6 +15,7 @@ let fn_prd_mlp_notpii_ingesta_job04_alert = (endTime:datetime) {
         ),
         (
             fn_src_mlp_ws_pisystem("ContainerAppConsoleLogs_CL", endTime - 20m, endTime)
+           
             | where ContainerJobName_s == "mlp-prd-caj-pisystem-job04"
             | where Log_s contains "WARNING"
             | project ejecucion = bin(TimeGenerated, 5m), nombreReal = "mlp-prd-caj-pisystem-job04_logs", status = "w"
