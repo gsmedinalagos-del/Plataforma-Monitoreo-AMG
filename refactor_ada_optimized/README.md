@@ -221,9 +221,9 @@ python refactor_ada_optimized/check_conflict_markers.py
 - Los wrappers legacy fueron retirados para dejar una base limpia y consistente.
 
 ### 9.3 Limitación técnica KQL y tradeoff
-- **Sí**, KQL permite pasar nombre de tabla como parámetro usando `workspace("...").table(tableName)`.
+- **Sí**, KQL permite pasar nombre de tabla como parámetro usando API de tabla parametrizada en KQL (a través de funciones source).
 - **Limitación**: no se puede parametrizar de forma directa el identificador de workspace de manera libre y segura en una sola función universal sin introducir complejidad/ambigüedad.
-- **Solución aplicada**: función genérica por workspace (ADA, PISYSTEM, SSAG, etc.) consumida directamente por domains/helpers/sources agregadas.
+- **Solución aplicada**: función genérica por entorno/log-analytics (ADA, PISYSTEM, SSAG, etc.) consumida directamente por domains/helpers/sources agregadas.
 - **Tradeoff**: se mantiene algo de superficie API, pero se reduce drásticamente duplicación y se centraliza la parte crítica (workspace + filtro temporal).
 
 ### 9.4 Recomendación final
