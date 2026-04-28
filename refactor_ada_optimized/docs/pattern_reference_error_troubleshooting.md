@@ -124,7 +124,7 @@ Ejemplo para `fn_src_mlp_ws_plans(...)`:
 ```json
 {
   "azureLogAnalytics": {
-    "query": "fn_src_mlp_ws_plans("ContainerAppConsoleLogs_CL", ago(6h), now()) | take 1",
+    "query": "fn_src_mlp_ws_plans(\"ContainerAppConsoleLogs_CL\", ago(6h), now()) | take 1",
     "resources": [
       "/subscriptions/c68213bf-7453-4ba4-9aaa-56b822af4c20/resourceGroups/MLP-PRD-RG-PLANS/providers/Microsoft.OperationalInsights/workspaces/mlp-prd-law-plans"
     ]
