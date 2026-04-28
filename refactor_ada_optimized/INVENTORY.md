@@ -80,7 +80,6 @@ El mismo layout aplica para `law_functions_body_only/`.
 - `fn_src_mlp_pipeline_runs_all`
 - `fn_src_mlp_systemlogs_all`
 - `fn_src_mlp_ssag_systemlogs_all`
-- `fn_src_mlp_notpii_databricksjobs_all`
 
 ## 5) Regla de limpieza
 
