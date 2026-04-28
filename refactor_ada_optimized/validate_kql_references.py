@@ -5,10 +5,12 @@ import sys
 
 ROOT = Path(__file__).resolve().parent
 LAW = ROOT / "law_functions"
+BODY = ROOT / "law_functions_body_only"
 WRAPPERS = ROOT / "grafana_wrappers"
 
 DEF_RE = re.compile(r"\blet\s+(fn_[A-Za-z0-9_]+)\s*=\s*\(")
 CALL_RE = re.compile(r"\b(fn_[A-Za-z0-9_]+)\s*\(")
+CONFLICT_RE = re.compile(r"^(<<<<<<< .+|=======|>>>>>>> .+)$", re.M)
 
 REQUIRED_HELPERS = {
     "fn_mon_status_to_color",
@@ -86,6 +88,39 @@ for path in (LAW / "sources").glob("fn_src*.kql"):
     if not path.name.startswith("fn_src_mlp_"):
         errors.append(f"Non-standard source filename (missing mlp prefix): {path.relative_to(ROOT)}")
 
+
+# Ensure source files are mirrored between full/body_only and avoid legacy source wrapper names
+legacy_source_names = {
+    "fn_src_mlp_ada_consolelogs.kql",
+    "fn_src_mlp_ws_ada_table.kql", "fn_src_mlp_ws_ada_systemlogs.kql", "fn_src_mlp_ws_ada_consolelogs.kql",
+    "fn_src_mlp_ws_pisystem_table.kql", "fn_src_mlp_ws_pisystem_systemlogs.kql", "fn_src_mlp_ws_pisystem_consolelogs.kql",
+    "fn_src_mlp_ws_ssag_table.kql", "fn_src_mlp_ws_ssag_systemlogs.kql", "fn_src_mlp_ws_ssag_consolelogs.kql",
+    "fn_src_mlp_ws_notpii_databricksjobs_dev.kql", "fn_src_mlp_ws_notpii_databricksjobs_uat.kql",
+    "fn_src_mlp_ws_dispatch_pipelineruns.kql", "fn_src_mlp_ws_drillit_pipelineruns.kql", "fn_src_mlp_ws_blkgrde_pipelineruns.kql",
+    "fn_src_mlp_ws_meteo_systemlogs.kql", "fn_src_mlp_ws_plans_systemlogs.kql", "fn_src_mlp_ws_pdmsagi_systemlogs.kql",
+}
+for fname in sorted(legacy_source_names):
+    if (LAW / "sources" / fname).exists() or (BODY / "sources" / fname).exists():
+        errors.append(f"Legacy source wrapper must be removed: {fname}")
+
+law_source_files = {p.name for p in (LAW / "sources").glob("*.kql")}
+body_source_files = {p.name for p in (BODY / "sources").glob("*.kql")}
+for missing in sorted(law_source_files - body_source_files):
+    errors.append(f"Missing body_only source mirror: law_functions_body_only/sources/{missing}")
+for extra in sorted(body_source_files - law_source_files):
+    errors.append(f"Extra body_only source without full counterpart: law_functions_body_only/sources/{extra}")
+
+
+# Merge-conflict marker guard
+for path in LAW.rglob("*.kql"):
+    text = path.read_text(encoding="utf-8")
+    if CONFLICT_RE.search(text):
+        errors.append(f"Merge-conflict marker detected in {path.relative_to(ROOT)}")
+for path in BODY.rglob("*.kql"):
+    text = path.read_text(encoding="utf-8")
+    if CONFLICT_RE.search(text):
+        errors.append(f"Merge-conflict marker detected in {path.relative_to(ROOT)}")
+
 # Undefined references
 for path in all_files:
     text = path.read_text(encoding="utf-8")
@@ -106,7 +141,7 @@ for path in wrapper_files:
             errors.append(f"Wrapper {path.name} points to non-domain function: {fn}")
 
 # Ensure global depends only on domain functions + cross helper
-global_file = ROOT / "law_functions/domains/fn_prd_mlp_ada_dom_global_status.kql"
+global_file = ROOT / "law_functions/ada/domains/fn_prd_mlp_ada_dom_global_status.kql"
 if global_file.exists():
     text = global_file.read_text(encoding="utf-8")
     calls = sorted(set(CALL_RE.findall(text)))
