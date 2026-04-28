@@ -8,7 +8,11 @@ let fn_prd_mlp_notpii_ingesta_job04_alert = (endTime:datetime) {
 <<<<<<< HEAD
             fn_src_mlp_ws_pisystem("ContainerAppSystemLogs_CL", endTime - 20m, endTime)
 =======
+<<<<<<< HEAD
+            fn_src_mlp_ws_pisystem("ContainerAppSystemLogs_CL", endTime - 20m, endTime)
+=======
             fn_src_mlp_ws_pisystem_systemlogs(endTime - 20m, endTime)
+>>>>>>> main
 >>>>>>> main
 >>>>>>> main
             | where JobName_s == "mlp-prd-caj-pisystem-job04"
@@ -21,7 +25,11 @@ let fn_prd_mlp_notpii_ingesta_job04_alert = (endTime:datetime) {
 <<<<<<< HEAD
             fn_src_mlp_ws_pisystem("ContainerAppConsoleLogs_CL", endTime - 20m, endTime)
 =======
+<<<<<<< HEAD
+            fn_src_mlp_ws_pisystem("ContainerAppConsoleLogs_CL", endTime - 20m, endTime)
+=======
             fn_src_mlp_ws_pisystem_consolelogs(endTime - 20m, endTime)
+>>>>>>> main
 >>>>>>> main
 >>>>>>> main
             | where ContainerJobName_s == "mlp-prd-caj-pisystem-job04"
@@ -35,7 +43,11 @@ let fn_prd_mlp_notpii_ingesta_job04_alert = (endTime:datetime) {
 <<<<<<< HEAD
             fn_src_mlp_ws_pisystem("ContainerAppConsoleLogs_CL", endTime - 20m, endTime)
 =======
+<<<<<<< HEAD
+            fn_src_mlp_ws_pisystem("ContainerAppConsoleLogs_CL", endTime - 20m, endTime)
+=======
             fn_src_mlp_ws_pisystem_consolelogs(endTime - 20m, endTime)
+>>>>>>> main
 >>>>>>> main
 >>>>>>> main
             | where ContainerJobName_s == "mlp-prd-caj-pisystem-job04"

@@ -109,6 +109,17 @@ for missing in sorted(law_source_files - body_source_files):
 for extra in sorted(body_source_files - law_source_files):
     errors.append(f"Extra body_only source without full counterpart: law_functions_body_only/sources/{extra}")
 
+
+# Merge-conflict marker guard
+for path in LAW.rglob("*.kql"):
+    text = path.read_text(encoding="utf-8")
+    if "<<<<<<<" in text or ">>>>>>>" in text or "=======" in text:
+        errors.append(f"Merge-conflict marker detected in {path.relative_to(ROOT)}")
+for path in BODY.rglob("*.kql"):
+    text = path.read_text(encoding="utf-8")
+    if "<<<<<<<" in text or ">>>>>>>" in text or "=======" in text:
+        errors.append(f"Merge-conflict marker detected in {path.relative_to(ROOT)}")
+
 # Undefined references
 for path in all_files:
     text = path.read_text(encoding="utf-8")
