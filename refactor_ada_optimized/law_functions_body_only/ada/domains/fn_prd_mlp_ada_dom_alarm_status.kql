@@ -1,18 +1,18 @@
   let job06_ok = toscalar(
-    fn_src_mlp_systemlogs_all(startTime - 35m, endTime)
+    fn_src_systemlogs_all(startTime - 35m, endTime)
     | where JobName_s == "mlp-prd-caj-ada-job06" // filtro temprano por dominio
     | where Log_s contains "has successfully completed"
     | count
     ) > 0;
 let job07_ok = toscalar(
-    fn_src_mlp_systemlogs_all(startTime - 10m, endTime)
+    fn_src_systemlogs_all(startTime - 10m, endTime)
     | where JobName_s == "mlp-prd-caj-ada-job07" // filtro temprano por dominio
     | where Log_s contains "has successfully completed"
     | count
     ) > 0;
 //Se comenta porque es una regla que se ocupa en el dashboard de ADA PRD , más no en el dashboard de AMG
 //let errores = toscalar(
-//    source_ada_consolelogs_legacy(endTime - 1d, endTime)
+//    fn_src_ada_consolelogs(endTime - 1d, endTime)
 //    | where TimeGenerated >= endTime - 1d and TimeGenerated < endTime
 //    | where ContainerJobName_s startswith 'mlp-prd-caj-ada-job07' // filtro temprano por dominio
 //    | where Log_s startswith '{"fecha_log_UTC":'
