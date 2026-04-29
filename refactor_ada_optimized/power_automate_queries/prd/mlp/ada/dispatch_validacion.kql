@@ -1,0 +1,13 @@
+let startTime = ago(15m);
+let endTime = now();
+let dispatch_dom = toscalar(
+    fn_prd_mlp_ada_dom_dispatch_status(startTime, endTime)
+    | project status = iff(color == '#E53935', 'ALERT', 'OK')
+    | take 1
+);
+let global_dispatch = toscalar(
+    fn_prd_mlp_ada_dom_global_status(startTime, endTime)
+    | project Dispatch
+    | take 1
+);
+print startTime, endTime, dispatch_dom, global_dispatch
