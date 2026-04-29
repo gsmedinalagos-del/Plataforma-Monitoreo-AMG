@@ -1,4 +1,6 @@
-let startTime = ago(15m);
+// Ventana de validación en línea con tolerancias de negocio para ADA.
+let lookback = 3h;
+let startTime = ago(lookback);
 let endTime = now();
 let dispatch_dom = toscalar(
     fn_prd_mlp_ada_dom_dispatch_status(startTime, endTime)

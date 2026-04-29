@@ -1,4 +1,6 @@
-let resumen = fn_prd_mlp_ssag_dom_resumen_status(ago(3h), now());
+// Ventana de observación para SIROSAG acorde a sus tolerancias operativas.
+let lookback = 3h;
+let resumen = fn_prd_mlp_ssag_dom_resumen_status(ago(lookback), now());
 
 union
     (resumen | project orden = 1, producto = "Ingesta PI", estado = Ingesta_PI),

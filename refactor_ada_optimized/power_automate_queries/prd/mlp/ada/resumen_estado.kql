@@ -1,5 +1,7 @@
-// Se usa 15m para alinear con el comportamiento del panel de resumen (última foto operativa).
-let resumen = fn_prd_mlp_ada_dom_global_status(ago(15m), now());
+// Ventana de observación para ADA.
+// Debe respetar tolerancias de negocio de los dominios (fuentes + procesos con distinta cadencia).
+let lookback = 3h;
+let resumen = fn_prd_mlp_ada_dom_global_status(ago(lookback), now());
 
 union
     (resumen | project orden = 1, producto = "Dispatch", estado = Dispatch),

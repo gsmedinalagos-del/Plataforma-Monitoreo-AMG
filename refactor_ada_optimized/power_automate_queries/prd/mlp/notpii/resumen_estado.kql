@@ -1,4 +1,6 @@
-let resumen = fn_prd_mlp_notpii_dom_global_status(ago(3h), now());
+// Ventana de observación para NOTPII acorde a sus tolerancias operativas.
+let lookback = 3h;
+let resumen = fn_prd_mlp_notpii_dom_global_status(ago(lookback), now());
 
 union
     (resumen | project orden = 1, producto = "autoloader_uat", estado = autoloader_uat),
