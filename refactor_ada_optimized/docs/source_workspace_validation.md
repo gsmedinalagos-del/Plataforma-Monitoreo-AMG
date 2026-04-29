@@ -36,7 +36,7 @@ Fecha: 2026-04-28
 
 ## 4) Correcciones aplicadas
 
-1. Se creó `fn_src_mlp_ws_dataplatform(tableName, startTime, endTime)` en:
+1. Se creó `fn_src_mlp_ws_dataplatform(sourceType, startTime, endTime)` en:
    - `law_functions/sources/`
    - `law_functions_body_only/sources/`
 2. Se migraron consultas de `Logs_MLP_ADA_CL` a `fn_src_mlp_ws_dataplatform(...)` en:

@@ -9,7 +9,7 @@ let fn_prd_mlp_notpii_autoloader_alert = (jobs_config:dynamic, startTime:datetim
             sla_min = toint(item.sla_min);
 
     let EVENTS =
-        fn_src_mlp_ws_notpii_databricksjobs("all", startTime - 2d, endTime)
+        fn_src_mlp_ws_notpii_databricksjobs("DatabricksJobs", startTime - 2d, endTime)
         | extend j = parse_json(RequestParams)
         | extend jobID = tostring(j.jobId), state = tostring(j.jobTerminalState), eventTime = TimeGenerated
         | join kind=inner (JOBS | project jobID) on jobID
