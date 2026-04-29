@@ -81,15 +81,15 @@ Funciones compartidas entre productos:
 - `fn_prd_mlp_ada_dom_global_status`: consolidado global ADA.
 
 ## 3.2 Helpers ADA
-- `fn_prd_mlp_ada_alert_from_tables_lag`: evalúa lag por tabla según umbrales dinámicos.
+- `fn_prd_mlp_ada_lag_helpers`: evalúa lag por tabla según umbrales dinámicos.
 - `fn_prd_mlp_ada_alert_from_dispatch_nrt_logs`: evalúa alertas NRT desde logs de job17.
 - `fn_prd_mlp_ada_kpi_alert_rows`: detecta KPIs con errores persistentes y aplica excepciones por horario/mantención.
 
 ## 3.3 Sources ADA
-- Base genérica: `fn_src_mlp_ws_ada(tableName, startTime, endTime)`.
+- Base genérica: `fn_src_mlp_ws_ada(sourceType, startTime, endTime)`.
 - Relacionadas de pipeline/systemlogs:
-  - `fn_src_mlp_ws_dispatch(tableName, ...)`, `fn_src_mlp_ws_drillit(tableName, ...)`, `fn_src_mlp_ws_blkgrde(tableName, ...)`
-  - `fn_src_mlp_ws_meteo(tableName, ...)`, `fn_src_mlp_ws_plans(tableName, ...)`
+  - `fn_src_mlp_ws_dispatch(sourceType, ...)`, `fn_src_mlp_ws_drillit(sourceType, ...)`, `fn_src_mlp_ws_blkgrde(sourceType, ...)`
+  - `fn_src_mlp_ws_meteo(sourceType, ...)`, `fn_src_mlp_ws_plans(sourceType, ...)`
   - `fn_src_mlp_pipeline_runs_all`, `fn_src_mlp_systemlogs_all`
 
 Ejemplo:
@@ -110,13 +110,13 @@ Ejemplo:
 - `fn_prd_mlp_notpii_ingesta_job04_alert`: evaluación de job04 PI System (errores/warnings/ejecución).
 
 ## 4.3 Sources NOTPII
-- Base genérica PI System: `fn_src_mlp_ws_pisystem(tableName, startTime, endTime)`.
+- Base genérica PI System: `fn_src_mlp_ws_pisystem(sourceType, startTime, endTime)`.
 - Base genérica Databricks por ambiente: `fn_src_mlp_ws_notpii_databricksjobs(env, startTime, endTime)` con `env = dev|uat|all`.
-- Agregador product-level: `fn_src_mlp_notpii_databricksjobs_all` (usa `env = all`).
+- Consumo directo recomendado: `fn_src_mlp_ws_notpii_databricksjobs("DatabricksJobs", startTime, endTime)`.
 
 Ejemplos:
 - `fn_src_mlp_ws_pisystem("ContainerAppConsoleLogs_CL", startTime, endTime)`
-- `fn_src_mlp_ws_notpii_databricksjobs("all", startTime, endTime)`
+- `fn_src_mlp_ws_notpii_databricksjobs("DatabricksJobs", startTime, endTime)`
 
 ---
 
@@ -131,9 +131,9 @@ Ejemplos:
 - `fn_prd_mlp_ssag_eval_ejecucion`: evalúa ejecución esperada de jobs.
 
 ## 5.3 Sources SIROSAG
-- Base genérica SSAG: `fn_src_mlp_ws_ssag(tableName, startTime, endTime)`.
+- Base genérica SSAG: `fn_src_mlp_ws_ssag(sourceType, startTime, endTime)`.
 - Fuentes relacionadas usadas por agregación:
-  - `fn_src_mlp_ws_pdmsagi(tableName, ...)`, `fn_src_mlp_ws_plans(tableName, ...)`, `fn_src_mlp_ws_pisystem(tableName, ...)`
+  - `fn_src_mlp_ws_pdmsagi(sourceType, ...)`, `fn_src_mlp_ws_plans(sourceType, ...)`, `fn_src_mlp_ws_pisystem(sourceType, ...)`
   - `fn_src_mlp_ssag_systemlogs_all`
 
 Ejemplo:
@@ -205,15 +205,17 @@ python refactor_ada_optimized/check_conflict_markers.py
 ## 9) Refactor de Sources — mapping old -> new
 
 ### 9.1 Base genérica por workspace
-- `fn_src_mlp_ws_ada(tableName, startTime, endTime)`
-- `fn_src_mlp_ws_pisystem(tableName, startTime, endTime)`
-- `fn_src_mlp_ws_ssag(tableName, startTime, endTime)`
-- `fn_src_mlp_ws_dispatch(tableName, startTime, endTime)`
-- `fn_src_mlp_ws_drillit(tableName, startTime, endTime)`
-- `fn_src_mlp_ws_blkgrde(tableName, startTime, endTime)`
-- `fn_src_mlp_ws_meteo(tableName, startTime, endTime)`
-- `fn_src_mlp_ws_plans(tableName, startTime, endTime)`
-- `fn_src_mlp_ws_pdmsagi(tableName, startTime, endTime)`
+- `fn_src_mlp_ws_ada(sourceType, startTime, endTime)`
+- `fn_src_mlp_ws_dataplatform(sourceType, startTime, endTime)`
+- `fn_src_mlp_ws_pisystem(sourceType, startTime, endTime)`
+- `fn_src_mlp_ws_ssag(sourceType, startTime, endTime)`
+- `fn_src_mlp_ws_dispatch(sourceType, startTime, endTime)`
+- `fn_src_mlp_ws_drillit(sourceType, startTime, endTime)`
+- `fn_src_mlp_ws_blkgrde(sourceType, startTime, endTime)`
+- `fn_src_mlp_ws_meteo(sourceType, startTime, endTime)`
+- `fn_src_mlp_ws_plans(sourceType, startTime, endTime)`
+- `fn_src_mlp_ws_plans_local(sourceType, startTime, endTime)` *(diagnóstico/local, usa workspace de ejecución)*
+- `fn_src_mlp_ws_pdmsagi(sourceType, startTime, endTime)`
 - `fn_src_mlp_ws_notpii_databricksjobs(env, startTime, endTime)`
 
 ### 9.2 Estado de migración
@@ -221,11 +223,11 @@ python refactor_ada_optimized/check_conflict_markers.py
 - Los wrappers legacy fueron retirados para dejar una base limpia y consistente.
 
 ### 9.3 Limitación técnica KQL y tradeoff
-- **Sí**, KQL permite pasar nombre de tabla como parámetro usando `workspace("...").table(tableName)`.
+- **Sí**, KQL permite pasar nombre de tabla como parámetro usando API de tabla parametrizada en KQL (a través de funciones source).
 - **Limitación**: no se puede parametrizar de forma directa el identificador de workspace de manera libre y segura en una sola función universal sin introducir complejidad/ambigüedad.
-- **Solución aplicada**: función genérica por workspace (ADA, PISYSTEM, SSAG, etc.) consumida directamente por domains/helpers/sources agregadas.
+- **Solución aplicada**: función genérica por entorno/log-analytics (ADA, PISYSTEM, SSAG, etc.) consumida directamente por domains/helpers/sources agregadas.
 - **Tradeoff**: se mantiene algo de superficie API, pero se reduce drásticamente duplicación y se centraliza la parte crítica (workspace + filtro temporal).
 
 ### 9.4 Recomendación final
-- Para tablas de un workspace conocido: usar `fn_src_mlp_ws_<workspace>(tableName, startTime, endTime)`.
+- Para tablas de un workspace conocido: usar `fn_src_mlp_ws_<workspace>(sourceType, startTime, endTime)`.
 - Para escenarios multi-entorno (NOTPII Databricks): usar función controlada por enum (`env = dev|uat|all`) en vez de string totalmente libre para workspace.
