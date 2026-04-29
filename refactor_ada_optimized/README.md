@@ -15,6 +15,7 @@ refactor_ada_optimized/
 │  ├─ cross_product/helpers
 │  └─ sources                 # Fuentes comunes de prd/mlp
 ├─ law_functions_body_only/prd/mlp/  # Espejo para LAW UI
+├─ power_automate_queries/prd/mlp/   # Queries listas para flujos Power Automate
 └─ grafana_wrappers/prd/mlp/
    ├─ ada/                    # Wrappers de ADA
    ├─ notpii/                 # Wrappers de NOTPII
