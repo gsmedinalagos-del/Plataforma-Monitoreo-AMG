@@ -47,7 +47,6 @@ El mismo layout aplica para `law_functions_body_only/prd/mlp/`.
 
 - Cross-product:
   - `fn_mon_status_to_color`
-  - `fn_mon_global_from_color_set`
 
 - ADA:
   - `fn_prd_mlp_ada_lag_helpers`

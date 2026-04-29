@@ -59,7 +59,6 @@ Funciones de acceso a logs/pipelines.
 Funciones compartidas entre productos:
 
 - `fn_mon_status_to_color`
-- `fn_mon_global_from_color_set`
 
 ---
 

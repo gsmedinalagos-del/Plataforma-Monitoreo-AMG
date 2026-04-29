@@ -18,7 +18,6 @@ CONFLICT_RE = re.compile(r"^(<<<<<<< .+|=======|>>>>>>> .+)$", re.M)
 
 REQUIRED_HELPERS = {
     "fn_mon_status_to_color",
-    "fn_mon_global_from_color_set",
     "fn_prd_mlp_ada_lag_helpers",
 }
 
@@ -158,7 +157,7 @@ global_file = LAW_SCOPE / "ada/domains/fn_prd_mlp_ada_dom_global_status.kql"
 if global_file.exists():
     text = global_file.read_text(encoding="utf-8")
     calls = sorted(set(CALL_RE.findall(text)))
-    allowed = set(REQUIRED_DOMAINS) | {"fn_mon_global_from_color_set", "fn_prd_mlp_ada_dom_global_status"}
+    allowed = set(REQUIRED_DOMAINS) | {"fn_prd_mlp_ada_dom_global_status"}
     unexpected = [c for c in calls if c not in allowed]
     if unexpected:
         errors.append(f"Global function has unexpected dependencies: {unexpected}")
