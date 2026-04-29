@@ -73,6 +73,15 @@ for path in law_files:
 
 errors = []
 
+# Legacy layout guardrails: wrappers must live under <ambiente>/<faena>/<producto>
+legacy_wrapper_dirs = {"ada", "notpii", "sirosag"}
+for legacy_dir in sorted(legacy_wrapper_dirs):
+    if (WRAPPERS / legacy_dir).exists():
+        errors.append(
+            f"Legacy wrapper folder detected: grafana_wrappers/{legacy_dir}. "
+            f"Use grafana_wrappers/{AMBIENTE}/{FAENA}/{legacy_dir} instead."
+        )
+
 # Duplicate definitions
 for name, count in sorted(def_count.items()):
     if count > 1:
