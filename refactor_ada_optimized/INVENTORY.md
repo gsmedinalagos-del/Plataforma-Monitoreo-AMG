@@ -66,6 +66,7 @@ El mismo layout aplica para `law_functions_body_only/`.
 
 ### 4.1 Base genérica por workspace
 - `fn_src_mlp_ws_ada(tableName, startTime, endTime)`
+- `fn_src_mlp_ws_dataplatform(tableName, startTime, endTime)`
 - `fn_src_mlp_ws_pisystem(tableName, startTime, endTime)`
 - `fn_src_mlp_ws_ssag(tableName, startTime, endTime)`
 - `fn_src_mlp_ws_dispatch(tableName, startTime, endTime)`
@@ -73,6 +74,7 @@ El mismo layout aplica para `law_functions_body_only/`.
 - `fn_src_mlp_ws_blkgrde(tableName, startTime, endTime)`
 - `fn_src_mlp_ws_meteo(tableName, startTime, endTime)`
 - `fn_src_mlp_ws_plans(tableName, startTime, endTime)`
+- `fn_src_mlp_ws_plans_local(tableName, startTime, endTime)` *(diagnóstico/local, usa workspace de ejecución)*
 - `fn_src_mlp_ws_pdmsagi(tableName, startTime, endTime)`
 - `fn_src_mlp_ws_notpii_databricksjobs(env, startTime, endTime)`
 
@@ -80,7 +82,6 @@ El mismo layout aplica para `law_functions_body_only/`.
 - `fn_src_mlp_pipeline_runs_all`
 - `fn_src_mlp_systemlogs_all`
 - `fn_src_mlp_ssag_systemlogs_all`
-- `fn_src_mlp_notpii_databricksjobs_all`
 
 ## 5) Regla de limpieza
 
