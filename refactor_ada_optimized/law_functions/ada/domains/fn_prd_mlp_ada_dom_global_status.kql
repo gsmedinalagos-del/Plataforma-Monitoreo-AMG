@@ -9,6 +9,6 @@ let fn_prd_mlp_ada_dom_global_status = (startTime:datetime, endTime:datetime) {
     (fn_prd_mlp_ada_dom_kpi_status(startTime,endTime) | project color),
     (fn_prd_mlp_ada_dom_alarm_status(startTime,endTime) | project color),
     (fn_prd_mlp_ada_dom_front_status(startTime,endTime) | project color)
-  | summarize colors = make_list(color)
-  | project color = fn_mon_global_from_color_set(colors)
+  | summarize any_alert = max(iff(color == "#E53935", 1, 0))
+  | project color = iff(any_alert == 1, "#E53935", "#EAF4EA")
 };
