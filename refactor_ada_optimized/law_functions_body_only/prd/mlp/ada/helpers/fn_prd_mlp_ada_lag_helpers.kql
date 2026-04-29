@@ -1,0 +1,18 @@
+  let maps = fn_prd_mlp_ada_threshold_maps();
+  let mapUmbralAlerta = toscalar(maps | project map_sources);
+  let t = fn_src_mlp_ws_ada("ContainerAppConsoleLogs_CL", startTime, endTime)
+      | where TimeGenerated between (startTime .. endTime)
+      | where ContainerGroupName_s startswith "mlp-prd-caj-ada-job02" // filtro temprano por dominio
+      | where Log_s startswith '{"fecha'
+      | project parsed = parse_json(Log_s)
+      | project mensaje=tostring(parsed.mensaje), fecha_log_UTC=todatetime(parsed.fecha_log_UTC)
+      | where mensaje startswith "timestamp_"
+      | extend tabla = replace_string(replace_string(substring(mensaje, 10, indexof(mensaje, ": ") - 10), "last_record_", ""), "last_reg_", "")
+      | where tabla in (tables)
+      | extend ultimo_timestamp = todatetime(substring(mensaje, indexof(mensaje, ": ") + 2, 19))
+      | extend ultimo_timestamp = datetime_local_to_utc(ultimo_timestamp, "America/Santiago")
+      | extend diff_minutos = round(datetime_diff("second", fecha_log_UTC, ultimo_timestamp) / 60.0, 1)
+      | extend umbral=todouble(mapUmbralAlerta[tabla])
+      | extend alert=iff(isempty(diff_minutos) or diff_minutos > umbral, 1, 0)
+      | summarize has_alert=max(alert);
+  iff(toscalar(t) == 1, "ALERT", "OK")

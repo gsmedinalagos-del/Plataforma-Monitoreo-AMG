@@ -5,13 +5,14 @@ Inventario derivado del grafo real: `wrappers -> domains -> helpers -> sources`.
 
 ## 0) Organización de carpetas
 
-- `law_functions/ada/{domains,helpers}`
-- `law_functions/notpii/{domains,helpers}`
-- `law_functions/sirosag/{domains,helpers}`
-- `law_functions/cross_product/helpers`
-- `law_functions/sources` (mismo nivel que carpetas de productos)
+- `law_functions/prd/mlp/ada/{domains,helpers}`
+- `law_functions/prd/mlp/notpii/{domains,helpers}`
+- `law_functions/prd/mlp/sirosag/{domains,helpers}`
+- `law_functions/prd/mlp/cross_product/helpers`
+- `law_functions/prd/mlp/sources`
+- `grafana_wrappers/prd/mlp/{ada,notpii,sirosag}`
 
-El mismo layout aplica para `law_functions_body_only/`.
+El mismo layout aplica para `law_functions_body_only/prd/mlp/`.
 
 ## 1) Wrappers activos
 
@@ -46,7 +47,6 @@ El mismo layout aplica para `law_functions_body_only/`.
 
 - Cross-product:
   - `fn_mon_status_to_color`
-  - `fn_mon_global_from_color_set`
 
 - ADA:
   - `fn_prd_mlp_ada_lag_helpers`
