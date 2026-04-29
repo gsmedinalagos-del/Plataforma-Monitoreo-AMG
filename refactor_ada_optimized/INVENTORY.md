@@ -74,6 +74,7 @@ El mismo layout aplica para `law_functions_body_only/`.
 - `fn_src_mlp_ws_blkgrde(tableName, startTime, endTime)`
 - `fn_src_mlp_ws_meteo(tableName, startTime, endTime)`
 - `fn_src_mlp_ws_plans(tableName, startTime, endTime)`
+- `fn_src_mlp_ws_plans_local(tableName, startTime, endTime)` *(diagnóstico/local, usa workspace de ejecución)*
 - `fn_src_mlp_ws_pdmsagi(tableName, startTime, endTime)`
 - `fn_src_mlp_ws_notpii_databricksjobs(env, startTime, endTime)`
 

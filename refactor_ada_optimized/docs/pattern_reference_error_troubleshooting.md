@@ -146,3 +146,16 @@ Prueba mínima de ejecución real:
 - `fn_src_mlp_ws_plans("ContainerAppConsoleLogs_CL", ago(30m), now()) | take 1`
 
 Si falla con `pattern references were not declared`, todavía falta adjuntar resources en el caller.
+
+
+## Alternativa para pruebas locales (sin resources cross-workspace)
+
+Se agregó `fn_src_mlp_ws_plans_local(tableName, startTime, endTime)`.
+
+- Esta variante usa `table(tableName)` sobre el workspace de ejecución.
+- Úsala **solo** para pruebas cuando ya estás parado en el workspace PLANS.
+- No reemplaza `fn_src_mlp_ws_plans` para casos productivos cross-workspace.
+
+Ejemplo:
+
+`fn_src_mlp_ws_plans_local("ContainerAppConsoleLogs_CL", ago(6h), now()) | take 1`

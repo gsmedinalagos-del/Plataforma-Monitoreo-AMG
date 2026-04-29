@@ -214,6 +214,7 @@ python refactor_ada_optimized/check_conflict_markers.py
 - `fn_src_mlp_ws_blkgrde(tableName, startTime, endTime)`
 - `fn_src_mlp_ws_meteo(tableName, startTime, endTime)`
 - `fn_src_mlp_ws_plans(tableName, startTime, endTime)`
+- `fn_src_mlp_ws_plans_local(tableName, startTime, endTime)` *(diagnóstico/local, usa workspace de ejecución)*
 - `fn_src_mlp_ws_pdmsagi(tableName, startTime, endTime)`
 - `fn_src_mlp_ws_notpii_databricksjobs(env, startTime, endTime)`
 
