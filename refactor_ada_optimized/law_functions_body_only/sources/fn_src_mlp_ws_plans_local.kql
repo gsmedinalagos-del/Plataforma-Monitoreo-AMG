@@ -1,0 +1,2 @@
+  table(tableName)
+  | where TimeGenerated between (startTime .. endTime)

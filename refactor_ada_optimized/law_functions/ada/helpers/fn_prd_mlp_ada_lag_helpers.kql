@@ -1,5 +1,5 @@
 // ADA-only helper
-let fn_prd_mlp_ada_alert_from_tables_lag = (tables:dynamic, startTime:datetime, endTime:datetime) {
+let fn_prd_mlp_ada_lag_helpers = (tables:dynamic, startTime:datetime, endTime:datetime) {
   let mapUmbralAlerta = dynamic({
       "pisystem_interpolated": 20,
       "dispatch_tiempos": 70,

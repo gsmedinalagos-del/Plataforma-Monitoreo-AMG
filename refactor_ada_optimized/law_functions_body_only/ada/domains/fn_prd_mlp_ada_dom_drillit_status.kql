@@ -5,6 +5,6 @@
     | where OperationName has "Succeeded"
     | count
   ) > 0;
-  let lag = fn_prd_mlp_ada_alert_from_tables_lag(dynamic(["drillit_drillings","drillit_drill_state_history"]), startTime, endTime);
+  let lag = fn_prd_mlp_ada_lag_helpers(dynamic(["drillit_drillings","drillit_drill_state_history"]), startTime, endTime);
   let status = iff(not(ing_ok) or lag == "ALERT", "ALERT", "OK");
   print color = fn_mon_status_to_color(status)
