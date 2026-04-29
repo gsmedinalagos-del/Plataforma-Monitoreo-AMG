@@ -7,7 +7,7 @@ let fn_prd_mlp_ada_kpi_alert_rows = (startTime:datetime, endTime:datetime) {
 
     let en_mantencion =
         toscalar(
-            workspace('/subscriptions/0d996eb2-802f-4ef8-8ae6-d385c74da7e6/resourceGroups/ams-dev-dataplatform-rg/providers/Microsoft.OperationalInsights/workspaces/ams-dev-dataplatform-laws').Logs_MLP_ADA_CL
+            fn_src_mlp_ws_dataplatform("Logs_MLP_ADA_CL", startTime, endTime)
             | where product_origin == "DISPATCH_CONDICION_OPERACIONAL"
             | top 1 by TimeGenerated desc
             | extend CH1 = tostring(detail["CH-1"]), CH2 = tostring(detail["CH-02"])

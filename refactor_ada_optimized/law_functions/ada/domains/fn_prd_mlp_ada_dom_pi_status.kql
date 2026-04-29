@@ -5,7 +5,7 @@ let fn_prd_mlp_ada_dom_pi_status = (startTime:datetime, endTime:datetime) {
     | where Log_s contains "has successfully completed"
     | count
   ) > 0;
-  let lag = fn_prd_mlp_ada_alert_from_tables_lag(dynamic(["pisystem_interpolated"]), startTime, endTime);
+  let lag = fn_prd_mlp_ada_lag_helpers(dynamic(["pisystem_interpolated"]), startTime, endTime);
   let status = iff(not(job_ok) or lag == "ALERT", "ALERT", "OK");
   print color = fn_mon_status_to_color(status)
 };
