@@ -1,4 +1,4 @@
-let fn_prd_mlp_notpii_autoloader_alert = (jobs_config:dynamic, startTime:datetime, endTime:datetime, step:timespan = 15m) {
+let fn_prd_mlp_notpii_autoloader_alert = (jobs_config:dynamic, startTime:datetime, endTime:datetime, step:timespan) {
     let JOBS =
         print cfg = jobs_config
         | mv-expand item = cfg
