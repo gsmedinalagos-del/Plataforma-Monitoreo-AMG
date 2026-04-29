@@ -1,4 +1,5 @@
-let resumen = fn_prd_mlp_ada_dom_global_status(ago(3h), now());
+// Se usa 15m para alinear con el comportamiento del panel de resumen (última foto operativa).
+let resumen = fn_prd_mlp_ada_dom_global_status(ago(15m), now());
 
 union
     (resumen | project orden = 1, producto = "Dispatch", estado = Dispatch),
