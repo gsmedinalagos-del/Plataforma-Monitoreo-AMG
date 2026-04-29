@@ -15,7 +15,7 @@ CONFLICT_RE = re.compile(r"^(<<<<<<< .+|=======|>>>>>>> .+)$", re.M)
 REQUIRED_HELPERS = {
     "fn_mon_status_to_color",
     "fn_mon_global_from_color_set",
-    "fn_prd_mlp_ada_alert_from_tables_lag",
+    "fn_prd_mlp_ada_lag_helpers",
 }
 
 REQUIRED_DOMAINS = {
