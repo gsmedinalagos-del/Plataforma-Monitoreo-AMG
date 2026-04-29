@@ -1,0 +1,21 @@
+// Ventana de observación para NOTPII acorde a sus tolerancias operativas.
+let lookback = 3h;
+let resumen = fn_prd_mlp_notpii_dom_global_status(ago(lookback), now());
+
+union
+    (resumen | project orden = 1, producto = "autoloader_uat", estado = autoloader_uat),
+    (resumen | project orden = 2, producto = "autoloader_dev", estado = autoloader_dev),
+    (resumen | project orden = 3, producto = "ingesta", estado = ingesta)
+| extend color = case(
+    estado == "ALERT", "#E53935",
+    estado == "WARNING", "#FFF4CC",
+    "#EAF4EA"
+)
+| extend icono = case(
+    estado == "ALERT", "🔴",
+    estado == "WARNING", "🟡",
+    estado == "OK", "🟢",
+    "⚪"
+)
+| project orden, producto, estado, color, icono
+| order by orden asc
