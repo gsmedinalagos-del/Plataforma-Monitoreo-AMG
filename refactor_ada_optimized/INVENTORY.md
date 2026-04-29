@@ -10,6 +10,7 @@ Inventario derivado del grafo real: `wrappers -> domains -> helpers -> sources`.
 - `law_functions/sirosag/{domains,helpers}`
 - `law_functions/cross_product/helpers`
 - `law_functions/sources` (mismo nivel que carpetas de productos)
+- `grafana_wrappers/{ada,notpii,sirosag}`
 
 El mismo layout aplica para `law_functions_body_only/`.
 

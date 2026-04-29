@@ -55,7 +55,7 @@ REQUIRED_WRAPPERS = {
 }
 
 law_files = sorted(LAW.rglob("*.kql"))
-wrapper_files = sorted(WRAPPERS.glob("*.kql"))
+wrapper_files = sorted(WRAPPERS.rglob("*.kql"))
 all_files = law_files + wrapper_files
 
 func_defs = {}

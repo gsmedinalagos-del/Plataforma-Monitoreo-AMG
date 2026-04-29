@@ -22,7 +22,10 @@ refactor_ada_optimized/
 │  │  └─ helpers/             # Utilidades compartidas
 │  └─ sources/                # Fuentes comunes (mismo nivel que carpetas de productos)
 ├─ law_functions_body_only/   # Espejo por producto para pegar body en LAW UI
-└─ grafana_wrappers/          # Variables/paneles de Grafana (entrypoints)
+└─ grafana_wrappers/
+   ├─ ada/                   # Wrappers de ADA
+   ├─ notpii/                # Wrappers de NOTPII
+   └─ sirosag/               # Wrappers de SIROSAG
 ```
 
 
@@ -180,7 +183,7 @@ python refactor_ada_optimized/validate_kql_references.py
 
 ## 8) Reglas para cambios futuros
 
-1. Si agregas un nuevo dominio, debe tener wrapper en `grafana_wrappers/`.
+1. Si agregas un nuevo dominio, debe tener wrapper en `grafana_wrappers/<producto>/`.
 2. Si agregas helper nuevo, preferir prefijo `fn_prd_mlp_*`.
 3. Evitar duplicados legacy (`fn_prd_*` o `fn_src_*` sin `mlp_`) salvo compatibilidad justificada.
 4. Mantener espejo en `law_functions_body_only/` cuando corresponda.
