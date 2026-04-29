@@ -1,0 +1,11 @@
+let fn_prd_mlp_ssag_dom_salud_itot = (endTime:datetime) {
+    union
+        (fn_prd_mlp_ssag_eval_ejecucion('mlp-prd-caj-ssag-job01', endTime, 60, 5, 'lte') | extend Metric='Fallas_job_01'),
+        (fn_prd_mlp_ssag_eval_desfase('mlp-prd-caj-ssag-job01',   endTime, 60, 5)        | extend Metric='Desfase_Job_01')
+    | summarize Status = take_any(Status) by Metric
+    | evaluate pivot(Metric, take_any(Status))
+    | project Salud_ITOT = iff(
+        column_ifexists('Fallas_job_01', 'OK') == 'NOOK' or
+        column_ifexists('Desfase_Job_01', 'OK') == 'NOOK',
+        'Alertar', 'No Alertar')
+};

@@ -1,0 +1,23 @@
+let fn_prd_mlp_ssag_dom_celdas = (endTime:datetime) {
+    union
+        (fn_prd_mlp_ssag_eval_ejecucion('mlp-prd-caj-ssag-job04', endTime, 240, 1, 'lt') | extend Metric='Fallas_job_04'),
+        (fn_prd_mlp_ssag_eval_ejecucion('mlp-prd-caj-ssag-job06', endTime, 240, 1, 'lt') | extend Metric='Fallas_job_06'),
+        (fn_prd_mlp_ssag_eval_ejecucion('mlp-prd-caj-ssag-job08', endTime, 240, 1, 'lt') | extend Metric='Fallas_job_08'),
+        (fn_prd_mlp_ssag_eval_ejecucion('mlp-prd-caj-ssag-job10', endTime, 240, 1, 'lt') | extend Metric='Fallas_job_10'),
+        (fn_prd_mlp_ssag_eval_desfase('mlp-prd-caj-ssag-job04',   endTime, 300, 245)     | extend Metric='Desfase_Job_04'),
+        (fn_prd_mlp_ssag_eval_desfase('mlp-prd-caj-ssag-job06',   endTime, 300, 245)     | extend Metric='Desfase_Job_06'),
+        (fn_prd_mlp_ssag_eval_desfase('mlp-prd-caj-ssag-job08',   endTime, 300, 245)     | extend Metric='Desfase_Job_08'),
+        (fn_prd_mlp_ssag_eval_desfase('mlp-prd-caj-ssag-job10',   endTime, 300, 245)     | extend Metric='Desfase_Job_10')
+    | summarize Status = take_any(Status) by Metric
+    | evaluate pivot(Metric, take_any(Status))
+    | project Celdas = iff(
+        column_ifexists('Fallas_job_04', 'OK') == 'NOOK' or
+        column_ifexists('Desfase_Job_04', 'OK') == 'NOOK' or
+        column_ifexists('Fallas_job_06', 'OK') == 'NOOK' or
+        column_ifexists('Desfase_Job_06', 'OK') == 'NOOK' or
+        column_ifexists('Fallas_job_08', 'OK') == 'NOOK' or
+        column_ifexists('Desfase_Job_08', 'OK') == 'NOOK' or
+        column_ifexists('Fallas_job_10', 'OK') == 'NOOK' or
+        column_ifexists('Desfase_Job_10', 'OK') == 'NOOK',
+        'Alertar', 'No Alertar')
+};

@@ -1,0 +1,11 @@
+let fn_prd_mlp_ssag_dom_procesamiento_pi = (endTime:datetime) {
+    union
+        (fn_prd_mlp_ssag_eval_ejecucion('mlp-prd-caj-ssag-job02', endTime, 60, 5, 'lte') | extend Metric='Fallas_job_02'),
+        (fn_prd_mlp_ssag_eval_desfase('mlp-prd-caj-ssag-job02',   endTime, 60, 5)        | extend Metric='Desfase_Job_02')
+    | summarize Status = take_any(Status) by Metric
+    | evaluate pivot(Metric, take_any(Status))
+    | project Procesamiento_PI = iff(
+        column_ifexists('Fallas_job_02', 'OK') == 'NOOK' or
+        column_ifexists('Desfase_Job_02', 'OK') == 'NOOK',
+        'Alertar', 'No Alertar')
+};

@@ -1,0 +1,56 @@
+fn_prd_mlp_ssag_eval_dominio(dominio:string)
+{
+    let endTime = now();
+
+    let cfg = cfg_dominios
+        | where Dominio == dominio;
+
+    let resultados =
+        cfg
+        | extend Resultado =
+            case(
+                Tipo == "ejecucion",
+                    toscalar(
+                        fn_prd_mlp_ssag_eval_ejecucion(
+                            JobName,
+                            endTime,
+                            VentanaMin,
+                            Param2,     // max_fallas
+                            Param1      // operador
+                        )
+                        | project Status
+                    ),
+
+                Tipo == "desfase",
+                    toscalar(
+                        fn_prd_mlp_ssag_eval_desfase(
+                            JobName,
+                            endTime,
+                            VentanaMin,
+                            Param2      // max_minutos
+                        )
+                        | project Status
+                    ),
+
+                Tipo == "desactualizacion",
+                    toscalar(
+                        fn_prd_mlp_ssag_eval_desactualizacion(
+                            JobName,
+                            endTime,
+                            VentanaMin,
+                            Param1,     // log_prefix
+                            Param2,     // ts_offset
+                            Param3,     // ts_length
+                            Param4      // max_minutos
+                        )
+                        | project Status
+                    ),
+
+                "OK"
+            )
+        | project Metric, Resultado;
+
+    resultados
+    | summarize any_nook = any(Resultado == "NOOK")
+    | project ResultadoFinal = iff(any_nook, "Alertar", "No Alertar")
+}

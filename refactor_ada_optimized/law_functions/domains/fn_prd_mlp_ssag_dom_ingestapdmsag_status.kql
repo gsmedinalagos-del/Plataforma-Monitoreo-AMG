@@ -1,0 +1,13 @@
+let fn_prd_mlp_ssag_dom_ingesta_pdm_sag = (endTime:datetime) {
+    union
+        (fn_prd_mlp_ssag_eval_ejecucion('mlp-prd-caj-pdmsagi-job01', endTime, 1440, 0, 'eq') | extend Metric='Fallas_pdm'),
+        (fn_prd_mlp_ssag_eval_desfase('mlp-prd-caj-pdmsagi-job01',   endTime, 1440, 1440)    | extend Metric='Desfase_pdm'),
+        (fn_prd_mlp_ssag_eval_desactualizacion('mlp-prd-caj-ssag-job04', endTime, 60, "{'last_timestamp_pdm_sag'", 28, 10, 2400) | extend Metric='Desactualizacion_pdm')
+    | summarize Status = take_any(Status) by Metric
+    | evaluate pivot(Metric, take_any(Status))
+    | project Ingesta_PDM_Sag = iff(
+        column_ifexists('Fallas_pdm', 'OK') == 'NOOK' or
+        column_ifexists('Desfase_pdm', 'OK') == 'NOOK' or
+        column_ifexists('Desactualizacion_pdm', 'OK') == 'NOOK',
+        'Alertar', 'No Alertar')
+};

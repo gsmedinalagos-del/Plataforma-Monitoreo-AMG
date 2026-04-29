@@ -1,0 +1,15 @@
+let fn_prd_mlp_ssag_dom_ingesta_planes = (endTime:datetime) {
+    union
+        (fn_prd_mlp_ssag_eval_ejecucion('mlp-prd-caj-plans-job01', endTime, 180, 5, 'lte') | extend Metric='Fallas_planes'),
+        (fn_prd_mlp_ssag_eval_desfase('mlp-prd-caj-plans-job01',   endTime, 1080, 1080)    | extend Metric='Desfase_planes'),
+        (fn_prd_mlp_ssag_eval_desactualizacion('mlp-prd-caj-ssag-job04', endTime, 60, '[INFO] Last Timestamp F80', 27, 19, 2400) | extend Metric='F80'),
+        (fn_prd_mlp_ssag_eval_desactualizacion('mlp-prd-caj-ssag-job04', endTime, 60, '[INFO] Last Timestamp AXB', 27, 19, 2400) | extend Metric='AXB')
+    | summarize Status = take_any(Status) by Metric
+    | evaluate pivot(Metric, take_any(Status))
+    | project Ingesta_Planes = iff(
+        column_ifexists('Fallas_planes', 'OK') == 'NOOK' or
+        column_ifexists('Desfase_planes', 'OK') == 'NOOK' or
+        column_ifexists('F80', 'OK') == 'NOOK' or
+        column_ifexists('AXB', 'OK') == 'NOOK',
+        'Alertar', 'No Alertar')
+};

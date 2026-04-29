@@ -1,0 +1,11 @@
+let fn_prd_mlp_ssag_dom_ingesta_pi = (endTime:datetime) {
+    union
+        (fn_prd_mlp_ssag_eval_ejecucion('mlp-prd-caj-pisystem-job01', endTime, 10, 30, 'lte') | extend Metric='Fallas_PISYSTEM'),
+        (fn_prd_ssag_eval_desactualizacion('mlp-prd-caj-ssag-job02', endTime, 60, "{'last_timestamp_notpii_UTC'", 31, 19, 30) | extend Metric='Desactualizacion_pi')
+    | summarize Status = take_any(Status) by Metric
+    | evaluate pivot(Metric, take_any(Status))
+    | project Ingesta_PI = iff(
+        column_ifexists('Fallas_PISYSTEM', 'OK') == 'NOOK' or
+        column_ifexists('Desactualizacion_pi', 'OK') == 'NOOK',
+        'Alertar', 'No Alertar')
+};

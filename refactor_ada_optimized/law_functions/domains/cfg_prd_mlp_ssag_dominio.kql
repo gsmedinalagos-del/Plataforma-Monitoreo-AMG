@@ -1,0 +1,114 @@
+let cfg_dominios = datatable(
+    Dominio:string,
+    Metric:string,
+    JobName:string,
+    Tipo:string,        // ejecucion | desfase | desactualizacion
+    VentanaMin:int,
+    Param1:string,      // operador o log_prefix
+    Param2:int,         // max_fallas o ts_offset o max_minutos
+    Param3:int,         // ts_length
+    Param4:int          // max_minutos
+)
+[
+    // ============================================================
+    // INGESTA PI
+    // ============================================================
+    "Ingesta_PI", "Fallas_PISYSTEM",       "mlp-prd-caj-pisystem-job01", "ejecucion",        10,  "lte", 30, 0, 0,
+    "Ingesta_PI", "Desactualizacion_pi",   "mlp-prd-caj-ssag-job02",     "desactualizacion", 60,  "{'last_timestamp_notpii_UTC'", 31, 19, 30,
+
+    // ============================================================
+    // INGESTA PDM SAG
+    // ============================================================
+    "Ingesta_PDM_Sag", "Fallas_pdm",            "mlp-prd-caj-pdmsagi-job01", "ejecucion",        1440, "eq", 0, 0, 0,
+    "Ingesta_PDM_Sag", "Desfase_pdm",           "mlp-prd-caj-pdmsagi-job01", "desfase",          1440, "", 1440, 0, 0,
+    "Ingesta_PDM_Sag", "Desactualizacion_pdm",  "mlp-prd-caj-ssag-job04",    "desactualizacion", 60,   "{'last_timestamp_pdm_sag'", 28, 10, 2400,
+
+    // ============================================================
+    // INGESTA PLANES
+    // ============================================================
+    "Ingesta_Planes", "Fallas_planes",          "mlp-prd-caj-plans-job01",   "ejecucion",        180, "lte", 5, 0, 0,
+    "Ingesta_Planes", "Desfase_planes",         "mlp-prd-caj-plans-job01",   "desfase",          1080, "", 1080, 0, 0,
+    "Ingesta_Planes", "F80",                    "mlp-prd-caj-ssag-job04",    "desactualizacion", 60, "[INFO] Last Timestamp F80", 27, 19, 2400,
+    "Ingesta_Planes", "AXB",                    "mlp-prd-caj-ssag-job04",    "desactualizacion", 60, "[INFO] Last Timestamp AXB", 27, 19, 2400,
+
+    // ============================================================
+    // SALUD ITOT
+    // ============================================================
+    "Salud_ITOT", "Fallas_job_01", "mlp-prd-caj-ssag-job01", "ejecucion", 60, "lte", 5, 0, 0,
+    "Salud_ITOT", "Desfase_Job_01", "mlp-prd-caj-ssag-job01", "desfase", 60, "", 5, 0, 0,
+
+    // ============================================================
+    // PROCESAMIENTO PI
+    // ============================================================
+    "Procesamiento_PI", "Fallas_job_02", "mlp-prd-caj-ssag-job02", "ejecucion", 60, "lte", 5, 0, 0,
+    "Procesamiento_PI", "Desfase_Job_02", "mlp-prd-caj-ssag-job02", "desfase", 60, "", 5, 0, 0,
+
+    // ============================================================
+    // PROCESAMIENTO RESTRICCIONES
+    // ============================================================
+    "Procesamiento_Restricciones", "Fallas_job_03", "mlp-prd-caj-ssag-job03", "ejecucion", 60, "lte", 5, 0, 0,
+    "Procesamiento_Restricciones", "Desfase_Job_03", "mlp-prd-caj-ssag-job03", "desfase", 60, "", 5, 0, 0,
+
+    // ============================================================
+    // CELDAS
+    // ============================================================
+    "Celdas", "Fallas_job_04", "mlp-prd-caj-ssag-job04", "ejecucion", 240, "lt", 1, 0, 0,
+    "Celdas", "Desfase_Job_04", "mlp-prd-caj-ssag-job04", "desfase", 300, "", 245, 0, 0,
+
+    "Celdas", "Fallas_job_06", "mlp-prd-caj-ssag-job06", "ejecucion", 240, "lt", 1, 0, 0,
+    "Celdas", "Desfase_Job_06", "mlp-prd-caj-ssag-job06", "desfase", 300, "", 245, 0, 0,
+
+    "Celdas", "Fallas_job_08", "mlp-prd-caj-ssag-job08", "ejecucion", 240, "lt", 1, 0, 0,
+    "Celdas", "Desfase_Job_08", "mlp-prd-caj-ssag-job08", "desfase", 300, "", 245, 0, 0,
+
+    "Celdas", "Fallas_job_10", "mlp-prd-caj-ssag-job10", "ejecucion", 240, "lt", 1, 0, 0,
+    "Celdas", "Desfase_Job_10", "mlp-prd-caj-ssag-job10", "desfase", 300, "", 245, 0, 0,
+
+    // ============================================================
+    // SÓLIDOS
+    // ============================================================
+    "Solidos", "Fallas_job_05", "mlp-prd-caj-ssag-job05", "ejecucion", 240, "lt", 1, 0, 0,
+    "Solidos", "Desfase_Job_05", "mlp-prd-caj-ssag-job05", "desfase", 300, "", 245, 0, 0,
+
+    "Solidos", "Fallas_job_07", "mlp-prd-caj-ssag-job07", "ejecucion", 240, "lt", 1, 0, 0,
+    "Solidos", "Desfase_Job_07", "mlp-prd-caj-ssag-job07", "desfase", 300, "", 245, 0, 0,
+
+    "Solidos", "Fallas_job_09", "mlp-prd-caj-ssag-job09", "ejecucion", 240, "lt", 1, 0, 0,
+    "Solidos", "Desfase_Job_09", "mlp-prd-caj-ssag-job09", "desfase", 300, "", 245, 0, 0,
+
+    "Solidos", "Fallas_job_11", "mlp-prd-caj-ssag-job11", "ejecucion", 240, "lt", 1, 0, 0,
+    "Solidos", "Desfase_Job_11", "mlp-prd-caj-ssag-job11", "desfase", 300, "", 245, 0, 0,
+
+    // ============================================================
+    // FRONT
+    // ============================================================
+    "Front", "Fallas_job_12", "mlp-prd-caj-ssag-job12", "ejecucion", 60, "lte", 5, 0, 0,
+    "Front", "Desfase_Job_12", "mlp-prd-caj-ssag-job12", "desfase", 60, "", 5, 0, 0,
+
+    // ============================================================
+    // ALARMAS
+    // ============================================================
+    "Alarmas", "Fallas_job_13", "mlp-prd-caj-ssag-job13", "ejecucion", 60, "lte", 5, 0, 0,
+    "Alarmas", "Desfase_Job_13", "mlp-prd-caj-ssag-job13", "desfase", 60, "", 5, 0, 0
+];
+
+
+
+cfg_dominios_dict() {
+
+    cfg_dominios
+    | summarize Metrics = make_bag(pack(
+            Metric,
+            pack(
+                "JobName", JobName,
+                "Tipo", Tipo,
+                "VentanaMin", VentanaMin,
+                "Param1", Param1,
+                "Param2", Param2,
+                "Param3", Param3,
+                "Param4", Param4
+            )
+        ))
+      by Dominio
+    | summarize Dict = make_bag(pack(Dominio, Metrics))
+}

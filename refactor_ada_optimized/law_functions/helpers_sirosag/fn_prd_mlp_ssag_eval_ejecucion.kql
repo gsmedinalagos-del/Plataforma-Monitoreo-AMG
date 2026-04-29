@@ -1,7 +1,7 @@
 let fn_prd_mlp_ssag_eval_ejecucion = (job_name:string, endTime:datetime, ventana_min:int, max_fallas:int, operador:string) {
     let startTime = endTime - totimespan(ventana_min * 60s);
     let fallas = toscalar(
-        fn_src_mlp_ssag_systemlogs_all(startTime, endTime)
+        (startTime, endTime)
         | where JobName_s == job_name
         | where Type_s == 'Warning' and Reason_s in ('FailedCreate', 'DeadlineExceeded', 'BackoffLimitExceeded')
         | summarize Fallas = count()
