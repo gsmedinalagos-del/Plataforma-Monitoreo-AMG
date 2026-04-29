@@ -49,7 +49,7 @@ El mismo layout aplica para `law_functions_body_only/`.
   - `fn_mon_global_from_color_set`
 
 - ADA:
-  - `fn_prd_mlp_ada_alert_from_tables_lag`
+  - `fn_prd_mlp_ada_lag_helpers`
   - `fn_prd_mlp_ada_alert_from_dispatch_nrt_logs`
   - `fn_prd_mlp_ada_kpi_alert_rows`
 

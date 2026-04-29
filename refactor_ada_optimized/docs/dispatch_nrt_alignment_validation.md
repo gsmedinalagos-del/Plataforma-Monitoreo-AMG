@@ -10,7 +10,7 @@ Se validó si la función de producto `fn_prd_mlp_ada_dom_dispatch_status` imple
 
 - `fn_prd_mlp_ada_dom_dispatch_status`
 - `fn_prd_mlp_ada_alert_from_dispatch_nrt_logs`
-- `fn_prd_mlp_ada_alert_from_tables_lag`
+- `fn_prd_mlp_ada_lag_helpers`
 
 ## Resultado
 
@@ -28,7 +28,7 @@ Esto replica la regla de alto nivel usada en el panel: desactualización de tabl
 
 | Regla panel NRT Dispatch | Implementación en funciones KQL | Estado |
 |---|---|---|
-| Alertar si alguna tabla Dispatch está desactualizada (`Std*`, `dispatch_*`, etc.) | `fn_prd_mlp_ada_alert_from_tables_lag(dispatch_tables, ...)` con umbrales por tabla en `mapUmbralAlerta` | Alineado |
+| Alertar si alguna tabla Dispatch está desactualizada (`Std*`, `dispatch_*`, etc.) | `fn_prd_mlp_ada_lag_helpers(dispatch_tables, ...)` con umbrales por tabla en `mapUmbralAlerta` | Alineado |
 | Alertar si en logs NRT (`Diff sql query`) el desfase supera 6 min | `fn_prd_mlp_ada_alert_from_dispatch_nrt_logs(...)` con `diff_minutos > 6` | Alineado |
 | Alertar si Job17 presenta 2 fallas consecutivas recientes | `consec_fail_job17` en `fn_prd_mlp_ada_dom_dispatch_status` | Alineado |
 | Estado final de Dispatch | `ALERT` si cualquiera de las 3 condiciones anteriores se cumple | Alineado |

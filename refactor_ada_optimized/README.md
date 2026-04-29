@@ -81,7 +81,7 @@ Funciones compartidas entre productos:
 - `fn_prd_mlp_ada_dom_global_status`: consolidado global ADA.
 
 ## 3.2 Helpers ADA
-- `fn_prd_mlp_ada_alert_from_tables_lag`: evalúa lag por tabla según umbrales dinámicos.
+- `fn_prd_mlp_ada_lag_helpers`: evalúa lag por tabla según umbrales dinámicos.
 - `fn_prd_mlp_ada_alert_from_dispatch_nrt_logs`: evalúa alertas NRT desde logs de job17.
 - `fn_prd_mlp_ada_kpi_alert_rows`: detecta KPIs con errores persistentes y aplica excepciones por horario/mantención.
 
