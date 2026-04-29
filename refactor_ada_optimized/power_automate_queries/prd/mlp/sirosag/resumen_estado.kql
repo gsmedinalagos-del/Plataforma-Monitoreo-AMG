@@ -1,0 +1,24 @@
+let resumen = fn_prd_mlp_ssag_dom_resumen_status(ago(3h), now());
+
+union
+    (resumen | project orden = 1, producto = "Ingesta PI", estado = Ingesta_PI),
+    (resumen | project orden = 2, producto = "Ingesta PDM Sag", estado = Ingesta_PDM_Sag),
+    (resumen | project orden = 3, producto = "Ingesta Planes", estado = Ingesta_Planes),
+    (resumen | project orden = 4, producto = "Salud ITOT", estado = Salud_ITOT),
+    (resumen | project orden = 5, producto = "Procesamiento PI", estado = Procesamiento_PI),
+    (resumen | project orden = 6, producto = "Procesamiento Restricciones", estado = Procesamiento_Restricciones),
+    (resumen | project orden = 7, producto = "Celdas", estado = Celdas),
+    (resumen | project orden = 8, producto = "Solidos", estado = Solidos)
+| extend color = case(
+    estado == "ALERT", "#E53935",
+    estado == "WARNING", "#FFF4CC",
+    "#EAF4EA"
+)
+| extend icono = case(
+    estado == "ALERT", "🔴",
+    estado == "WARNING", "🟡",
+    estado == "OK", "🟢",
+    "⚪"
+)
+| project orden, producto, estado, color, icono
+| order by orden asc

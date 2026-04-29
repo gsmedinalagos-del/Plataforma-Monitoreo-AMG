@@ -8,30 +8,27 @@ Este README describe **cómo está organizado el paquete KQL**, qué hace cada c
 
 ```text
 refactor_ada_optimized/
-├─ law_functions/
-│  ├─ ada/
-│  │  ├─ domains/             # Domains de ADA
-│  │  └─ helpers/             # Helpers de ADA
-│  ├─ notpii/
-│  │  ├─ domains/             # Domains de NOTPII
-│  │  └─ helpers/             # Helpers de NOTPII
-│  ├─ sirosag/
-│  │  ├─ domains/             # Domains de SIROSAG
-│  │  └─ helpers/             # Helpers de SIROSAG
-│  ├─ cross_product/
-│  │  └─ helpers/             # Utilidades compartidas
-│  └─ sources/                # Fuentes comunes (mismo nivel que carpetas de productos)
-├─ law_functions_body_only/   # Espejo por producto para pegar body en LAW UI
-└─ grafana_wrappers/          # Variables/paneles de Grafana (entrypoints)
+├─ law_functions/prd/mlp/
+│  ├─ ada/{domains,helpers}   # ADA por ambiente/faena/producto
+│  ├─ notpii/{domains,helpers}
+│  ├─ sirosag/{domains,helpers}
+│  ├─ cross_product/helpers
+│  └─ sources                 # Fuentes comunes de prd/mlp
+├─ law_functions_body_only/prd/mlp/  # Espejo para LAW UI
+├─ power_automate_queries/prd/mlp/   # Queries listas para flujos Power Automate
+└─ grafana_wrappers/prd/mlp/
+   ├─ ada/                    # Wrappers de ADA
+   ├─ notpii/                 # Wrappers de NOTPII
+   └─ sirosag/                # Wrappers de SIROSAG
 ```
 
 
 ### Convención de ubicación
 
-- Todo lo específico de producto vive bajo su carpeta (`ada/`, `notpii/`, `sirosag/`).
+- Todo se organiza por `ambiente/faena/producto` (actual: `prd/mlp/<producto>`).
 - Dentro de cada producto: `domains/` y `helpers/`.
 - `sources/` queda al mismo nivel de las carpetas de producto para centralizar acceso a datos.
-- Esta misma organización se replica en `law_functions_body_only/`.
+- Esta misma organización se replica en `law_functions_body_only/prd/mlp/`.
 
 ### Flujo general de ejecución
 
@@ -180,10 +177,10 @@ python refactor_ada_optimized/validate_kql_references.py
 
 ## 8) Reglas para cambios futuros
 
-1. Si agregas un nuevo dominio, debe tener wrapper en `grafana_wrappers/`.
+1. Si agregas un nuevo dominio, debe tener wrapper en `grafana_wrappers/<ambiente>/<faena>/<producto>/`.
 2. Si agregas helper nuevo, preferir prefijo `fn_prd_mlp_*`.
 3. Evitar duplicados legacy (`fn_prd_*` o `fn_src_*` sin `mlp_`) salvo compatibilidad justificada.
-4. Mantener espejo en `law_functions_body_only/` cuando corresponda.
+4. Mantener espejo en `law_functions_body_only/<ambiente>/<faena>/` cuando corresponda.
 5. Validar siempre con:
 
 ```bash
@@ -192,7 +189,7 @@ python refactor_ada_optimized/validate_kql_references.py
 
 El validador también verifica que:
 - no reaparezcan wrappers legacy de sources,
-- exista espejo 1:1 entre `law_functions/sources` y `law_functions_body_only/sources`,
+- exista espejo 1:1 entre `law_functions/<ambiente>/<faena>/sources` y `law_functions_body_only/<ambiente>/<faena>/sources`,
 - no existan markers de merge-conflict (`<<<<<<<`, `=======`, `>>>>>>>`) en KQL.
 
 Chequeo global recomendado (todo el repositorio):
