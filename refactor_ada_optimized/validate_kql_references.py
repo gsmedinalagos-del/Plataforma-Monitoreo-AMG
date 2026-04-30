@@ -31,6 +31,8 @@ REQUIRED_DOMAINS = {
     "fn_prd_mlp_ada_dom_alarm_status",
     "fn_prd_mlp_ada_dom_front_status",
     "fn_prd_mlp_ada_dom_kpi_status",
+    "fn_prd_mlp_ada_dom_optimizador_status",
+    "fn_prd_mlp_ada_dom_settings_status",
     "fn_prd_mlp_ada_dom_global_status",
     "fn_prd_mlp_notpii_dom_autoloader_dev_status",
     "fn_prd_mlp_notpii_dom_autoloader_uat_status",
