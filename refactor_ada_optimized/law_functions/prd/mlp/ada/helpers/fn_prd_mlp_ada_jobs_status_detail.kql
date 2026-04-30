@@ -21,7 +21,9 @@ let fn_prd_mlp_ada_jobs_status_detail = (startTime:datetime, endTime:datetime) {
   let maxUmbral = toscalar(jobsConfig | summarize max(thresholdMinutes));
   let expected =
     range TimeGeneratedBin_Chile from startTime - totimespan(maxUmbral * 60s) to endTime step 1m
-    | join kind=inner (jobsConfig) on 1 == 1
+    | extend JoinKey = 1
+    | join kind=inner (jobsConfig | extend JoinKey = 1) on JoinKey
+    | project-away JoinKey
     | extend valorEsperado = iff(
         frequencyMinutes == 1,
         1,
