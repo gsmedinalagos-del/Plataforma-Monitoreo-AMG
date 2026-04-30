@@ -27,7 +27,7 @@
         iff(datetime_part("minute", TimeGeneratedBin_Chile) in (0, 10, 20, 30, 40, 50), 1, 0)
       )
     | project TimeGeneratedBin_Chile, jobName, jobAlias, domain, thresholdMinutes, valorEsperado;
-  let real =
+  let realRuns =
     fn_src_mlp_ws_ada("ContainerAppSystemLogs_CL", startTime - totimespan(maxUmbral * 60s), endTime)
     | where TimeGenerated >= startTime - totimespan(maxUmbral * 60s)
     | where TimeGenerated < endTime
@@ -38,7 +38,7 @@
     | summarize valorReal = count() by TimeGeneratedBin_Chile = NormalizedTime, jobName = JobName_s;
   let expectedVsReal =
     expected
-    | join kind=leftouter (real) on TimeGeneratedBin_Chile, jobName
+    | join kind=leftouter (realRuns) on TimeGeneratedBin_Chile, jobName
     | extend valorReal = coalesce(valorReal, 0);
   let valoresAcumulados =
     expectedVsReal
