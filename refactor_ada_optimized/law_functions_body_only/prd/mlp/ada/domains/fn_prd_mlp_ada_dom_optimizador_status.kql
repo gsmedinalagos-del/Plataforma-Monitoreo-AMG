@@ -1,14 +1,3 @@
-  let adaJobsKpiAlert = toscalar(
-    fn_prd_mlp_ada_jobs_status_detail(startTime, endTime)
-    | where domain == "KPIs"
-    | summarize alertCount = countif(isAlert == true)
-    | project alertCount > 0
-  );
-  let count_no_esperados = toscalar(
-    fn_prd_mlp_ada_kpi_alert_rows(endTime - 180m, endTime)
-    | summarize c = dcount(KPINoEsperado)
-    | project c
-  );
   let optimizador_run_failed = toscalar(
     fn_src_mlp_ws_notpii_databricksjobs("DatabricksJobs", startTime, endTime)
     | extend json_RequestParams = parse_json(RequestParams)
@@ -25,5 +14,5 @@
     | where Log_s contains "has successfully completed"
     | count
   ) > 0;
-  let status = iff(adaJobsKpiAlert or count_no_esperados > 0 or optimizador_run_failed or not(optimizador_job01_ok), "ALERT", "OK");
+  let status = iff(optimizador_run_failed or not(optimizador_job01_ok), "ALERT", "OK");
   print color = fn_mon_status_to_color(status)

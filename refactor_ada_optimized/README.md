@@ -80,6 +80,7 @@ Funciones compartidas entre productos:
 - `fn_prd_mlp_ada_lag_helpers`: evalúa lag por tabla según umbrales dinámicos.
 - `fn_prd_mlp_ada_alert_from_dispatch_nrt_logs`: evalúa alertas NRT desde logs de job17.
 - `fn_prd_mlp_ada_kpi_alert_rows`: detecta KPIs con errores persistentes y aplica excepciones por horario/mantención.
+- `fn_prd_mlp_ada_jobs_status_detail`: diagnóstico tabular por job ADA (expected vs real), con umbral por job, tolerancia por rango (`range + mv-expand`), normalización especial de job17 y status granular (`a/s/w/n`).
 
 ## 3.3 Sources ADA
 - Base genérica: `fn_src_mlp_ws_ada(sourceType, startTime, endTime)`.
@@ -150,6 +151,8 @@ Ejemplo:
 - `var_mlp_ada_kpi`
 - `var_mlp_ada_alarm`
 - `var_mlp_ada_front`
+- `var_mlp_ada_jobs_detail` *(diagnóstico tabular por job para soporte)*
+- `var_mlp_ada_jobs_detail_legacyfmt` *(diagnóstico con formato `status+real/esperado` para paridad visual legacy)*
 
 ### NOTPII
 - `var_mlp_notpii_autoloader_dev`

@@ -31,6 +31,8 @@ REQUIRED_DOMAINS = {
     "fn_prd_mlp_ada_dom_alarm_status",
     "fn_prd_mlp_ada_dom_front_status",
     "fn_prd_mlp_ada_dom_kpi_status",
+    "fn_prd_mlp_ada_dom_optimizador_status",
+    "fn_prd_mlp_ada_dom_settings_status",
     "fn_prd_mlp_ada_dom_global_status",
     "fn_prd_mlp_notpii_dom_autoloader_dev_status",
     "fn_prd_mlp_notpii_dom_autoloader_uat_status",
@@ -50,11 +52,18 @@ REQUIRED_WRAPPERS = {
     "var_mlp_ada_kpi.kql",
     "var_mlp_ada_alarm.kql",
     "var_mlp_ada_front.kql",
+    "var_mlp_ada_jobs_detail.kql",
+    "var_mlp_ada_jobs_detail_legacyfmt.kql",
     "var_mlp_notpii_autoloader_dev.kql",
     "var_mlp_notpii_autoloader_uat.kql",
     "var_mlp_notpii_ingesta.kql",
     "var_mlp_notpii_difusion_global.kql",
     "var_mlp_sirosag_resumen.kql",
+}
+
+ALLOWED_NON_DOMAIN_WRAPPERS = {
+    "var_mlp_ada_jobs_detail.kql": {"fn_prd_mlp_ada_jobs_status_detail"},
+    "var_mlp_ada_jobs_detail_legacyfmt.kql": {"fn_prd_mlp_ada_jobs_status_detail"},
 }
 
 law_files = sorted(LAW.rglob("*.kql"))
@@ -149,7 +158,8 @@ for path in wrapper_files:
         errors.append(f"Wrapper must call exactly one function: {path.name} has {calls}")
     else:
         fn = calls[0]
-        if fn not in REQUIRED_DOMAINS:
+        allowed_extra = ALLOWED_NON_DOMAIN_WRAPPERS.get(path.name, set())
+        if fn not in REQUIRED_DOMAINS and fn not in allowed_extra:
             errors.append(f"Wrapper {path.name} points to non-domain function: {fn}")
 
 # Ensure global depends only on domain functions + cross helper

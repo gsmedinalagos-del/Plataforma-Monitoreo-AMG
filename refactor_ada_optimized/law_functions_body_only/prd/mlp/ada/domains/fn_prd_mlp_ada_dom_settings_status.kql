@@ -1,0 +1,16 @@
+  let settings_job01_ok = toscalar(
+    fn_src_mlp_ws_ada("ContainerAppSystemLogs_CL", endTime - 24h, endTime)
+    | where TimeGenerated >= endTime - 24h and TimeGenerated < endTime
+    | where JobName_s == "ams-prd-caj-genshare-job01"
+    | where Log_s contains "has successfully completed"
+    | count
+  ) > 0;
+  let settings_job02_ok = toscalar(
+    fn_src_mlp_ws_ada("ContainerAppSystemLogs_CL", endTime - 24h, endTime)
+    | where TimeGenerated >= endTime - 24h and TimeGenerated < endTime
+    | where JobName_s == "ams-prd-caj-genshare-job02"
+    | where Log_s contains "has successfully completed"
+    | count
+  ) > 0;
+  let status = iff(settings_job01_ok and settings_job02_ok, "OK", "ALERT");
+  print color = fn_mon_status_to_color(status)
