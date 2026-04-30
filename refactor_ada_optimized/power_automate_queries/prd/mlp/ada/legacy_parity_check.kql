@@ -31,12 +31,10 @@ let domain_alarm = toscalar(
     | take 1
 );
 let summary_domains =
-    datatable(domain:string, status_domain:string)
-    [
-      "NRT Dispatch", domain_dispatch,
-      "KPIs", domain_kpi,
-      "Alarmas", domain_alarm
-    ];
+    union
+      (print domain = "NRT Dispatch", status_domain = domain_dispatch),
+      (print domain = "KPIs", status_domain = domain_kpi),
+      (print domain = "Alarmas", status_domain = domain_alarm);
 let global =
     fn_prd_mlp_ada_dom_global_status(startTime, endTime)
     | project Dispatch, KPI, Alarmas;
