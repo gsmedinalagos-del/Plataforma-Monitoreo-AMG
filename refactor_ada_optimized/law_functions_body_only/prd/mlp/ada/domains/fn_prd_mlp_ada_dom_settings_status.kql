@@ -1,16 +1,20 @@
-  let settings_job01_ok = toscalar(
-    fn_src_mlp_ws_ada("ContainerAppSystemLogs_CL", endTime - 24h, endTime)
-    | where TimeGenerated >= endTime - 24h and TimeGenerated < endTime
-    | where JobName_s == "ams-prd-caj-genshare-job01"
+  let threshold_job01_minutes = 60.0;
+  let threshold_job02_minutes = 120.0;
+  let job01_last_success = toscalar(
+    fn_src_mlp_ws_ada("ContainerAppSystemLogs_CL", startTime - 4h, endTime)
+    | where TimeGenerated >= startTime - 4h and TimeGenerated < endTime
+    | where JobName_s == "mlp-prd-caj-prfci-job01"
     | where Log_s contains "has successfully completed"
-    | count
-  ) > 0;
-  let settings_job02_ok = toscalar(
-    fn_src_mlp_ws_ada("ContainerAppSystemLogs_CL", endTime - 24h, endTime)
-    | where TimeGenerated >= endTime - 24h and TimeGenerated < endTime
-    | where JobName_s == "ams-prd-caj-genshare-job02"
+    | summarize max(TimeGenerated)
+  );
+  let job02_last_success = toscalar(
+    fn_src_mlp_ws_ada("ContainerAppSystemLogs_CL", startTime - 4h, endTime)
+    | where TimeGenerated >= startTime - 4h and TimeGenerated < endTime
+    | where JobName_s == "mlp-prd-caj-prfci-job02"
     | where Log_s contains "has successfully completed"
-    | count
-  ) > 0;
-  let status = iff(settings_job01_ok and settings_job02_ok, "OK", "ALERT");
+    | summarize max(TimeGenerated)
+  );
+  let stale_job01 = isnull(job01_last_success) or todouble(datetime_diff('minute', endTime, job01_last_success)) > threshold_job01_minutes;
+  let stale_job02 = isnull(job02_last_success) or todouble(datetime_diff('minute', endTime, job02_last_success)) > threshold_job02_minutes;
+  let status = iff(stale_job01 or stale_job02, "ALERT", "OK");
   print color = fn_mon_status_to_color(status)
