@@ -22,7 +22,7 @@ El mismo layout aplica para `law_functions_body_only/prd/mlp/`.
 
 ## 2) Domains activos
 
-- ADA (10):
+- ADA (12):
   - `fn_prd_mlp_ada_dom_dispatch_status`
   - `fn_prd_mlp_ada_dom_drillit_status`
   - `fn_prd_mlp_ada_dom_blockgrade_status`
@@ -32,6 +32,8 @@ El mismo layout aplica para `law_functions_body_only/prd/mlp/`.
   - `fn_prd_mlp_ada_dom_alarm_status`
   - `fn_prd_mlp_ada_dom_front_status`
   - `fn_prd_mlp_ada_dom_kpi_status`
+  - `fn_prd_mlp_ada_dom_optimizador_status`
+  - `fn_prd_mlp_ada_dom_settings_status`
   - `fn_prd_mlp_ada_dom_global_status`
 
 - NOTPII (4):

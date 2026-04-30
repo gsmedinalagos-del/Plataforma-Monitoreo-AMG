@@ -73,8 +73,10 @@ Funciones compartidas entre productos:
 - `fn_prd_mlp_ada_dom_meteodata_status`: estado de Meteodata.
 - `fn_prd_mlp_ada_dom_alarm_status`: estado de Alarm.
 - `fn_prd_mlp_ada_dom_front_status`: estado de Front.
-- `fn_prd_mlp_ada_dom_kpi_status`: estado de KPI.
-- `fn_prd_mlp_ada_dom_global_status`: consolidado global ADA.
+- `fn_prd_mlp_ada_dom_kpi_status`: estado de KPIs.
+- `fn_prd_mlp_ada_dom_optimizador_status`: estado de Optimizador Mezcla (Databricks + ejecución job01 genshare).
+- `fn_prd_mlp_ada_dom_settings_status`: estado de Settings (jobs prfci job01/job02 con umbrales 60/120 min).
+- `fn_prd_mlp_ada_dom_global_status`: consolidado global ADA (incluye Settings y Optimizador Mezcla).
 
 ## 3.2 Helpers ADA
 - `fn_prd_mlp_ada_lag_helpers`: evalúa lag por tabla según umbrales dinámicos.

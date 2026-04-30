@@ -12,7 +12,7 @@
 - `fn_src_mlp_ws_meteo` → `fn_src_mlp_systemlogs_all`
 - `fn_src_mlp_ws_plans` → `fn_src_mlp_systemlogs_all`, `fn_src_mlp_ssag_systemlogs_all`
 - `fn_src_mlp_ws_pdmsagi` → `fn_src_mlp_ssag_systemlogs_all`
-- `fn_src_mlp_ws_notpii_databricksjobs` → `fn_prd_mlp_notpii_autoloader_alert`, `fn_prd_mlp_ada_dom_kpi_status`
+- `fn_src_mlp_ws_notpii_databricksjobs` → `fn_prd_mlp_notpii_autoloader_alert`, `fn_prd_mlp_ada_dom_optimizador_status`
 - `fn_src_mlp_pipeline_runs_all` → `fn_prd_mlp_ada_dom_blockgrade_status`, `fn_prd_mlp_ada_dom_drillit_status`
 - `fn_src_mlp_systemlogs_all` → `fn_prd_mlp_ada_dom_pi_status`, `fn_prd_mlp_ada_dom_alarm_status`, `fn_prd_mlp_ada_dom_meteodata_status`, `fn_prd_mlp_ada_dom_plans_status`, `fn_prd_mlp_ada_dom_kpi_status`
 - `fn_src_mlp_ssag_systemlogs_all` → `fn_prd_mlp_ssag_eval_ejecucion`, `fn_prd_mlp_ssag_eval_desfase`
@@ -34,7 +34,9 @@
 - `fn_prd_mlp_ada_dom_pi_status` → `fn_src_mlp_systemlogs_all`
 - `fn_prd_mlp_ada_dom_plans_status` → `fn_src_mlp_systemlogs_all`
 - `fn_prd_mlp_ada_dom_meteodata_status` → `fn_src_mlp_systemlogs_all`
-- `fn_prd_mlp_ada_dom_kpi_status` → `fn_src_mlp_systemlogs_all`, `fn_src_mlp_ws_ada`, `fn_src_mlp_ws_notpii_databricksjobs`
+- `fn_prd_mlp_ada_dom_kpi_status` → `fn_src_mlp_ws_ada`
+- `fn_prd_mlp_ada_dom_optimizador_status` → `fn_src_mlp_ws_ada`, `fn_src_mlp_ws_notpii_databricksjobs`
+- `fn_prd_mlp_ada_dom_settings_status` → `fn_src_mlp_ws_ada`
 - `fn_prd_mlp_ada_alert_from_dispatch_nrt_logs` → `fn_src_mlp_ws_ada`
 - `fn_prd_mlp_ada_kpi_alert_rows` → `fn_src_mlp_ws_ada`, `fn_src_mlp_ws_dataplatform`
 - `fn_prd_mlp_ada_lag_helpers` → `fn_src_mlp_ws_ada`
