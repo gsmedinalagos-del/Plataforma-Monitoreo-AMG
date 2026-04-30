@@ -1,0 +1,69 @@
+// Validación comparativa refactor (dominios) vs diagnóstico job-level ADA.
+// Objetivo: entregar señales objetivas para revisar paridad funcional contra el enfoque legacy.
+let lookback = 24h;
+let startTime = ago(lookback);
+let endTime = now();
+let jobs_detail =
+    fn_prd_mlp_ada_jobs_status_detail(startTime, endTime)
+    | project TimeGeneratedBin_Chile, domain, jobName, jobAlias, status, statusText, isAlert, realCount, expectedCount, expectedVsRealPct;
+let jobs_rollup =
+    jobs_detail
+    | summarize
+        total_jobs = dcount(jobName),
+        alerts_jobs = countif(isAlert == true),
+        warnings_jobs = countif(status == "w"),
+        saturated_jobs = countif(status == "s")
+      by domain, TimeGeneratedBin_Chile
+    | extend jobs_domain_status = iff(alerts_jobs > 0, "ALERT", "OK");
+let domain_dispatch = toscalar(
+    fn_prd_mlp_ada_dom_dispatch_status(startTime, endTime)
+    | project status = iff(color == "#E53935", "ALERT", "OK")
+    | take 1
+);
+let domain_kpi = toscalar(
+    fn_prd_mlp_ada_dom_kpi_status(startTime, endTime)
+    | project status = iff(color == "#E53935", "ALERT", "OK")
+    | take 1
+);
+let domain_alarm = toscalar(
+    fn_prd_mlp_ada_dom_alarm_status(startTime, endTime)
+    | project status = iff(color == "#E53935", "ALERT", "OK")
+    | take 1
+);
+let summary_domains =
+    union
+      (print domain = "NRT Dispatch", status_domain = domain_dispatch),
+      (print domain = "KPIs", status_domain = domain_kpi),
+      (print domain = "Alarmas", status_domain = domain_alarm);
+let global =
+    fn_prd_mlp_ada_dom_global_status(startTime, endTime)
+    | project Dispatch, KPI, Alarmas;
+jobs_rollup
+| summarize
+    total_jobs = sum(total_jobs),
+    alerts_jobs = sum(alerts_jobs),
+    warnings_jobs = sum(warnings_jobs),
+    saturated_jobs = sum(saturated_jobs),
+    any_jobs_alert = max(iff(jobs_domain_status == "ALERT", 1, 0))
+  by domain
+| join kind=leftouter summary_domains on domain
+| extend status_jobs_detail = iff(any_jobs_alert == 1, "ALERT", "OK")
+| extend parity = iff(status_jobs_detail == status_domain, "MATCH", "DIFF")
+| extend JoinKey = 1
+| join kind=leftouter (global | extend JoinKey = 1) on JoinKey
+| project-away JoinKey, JoinKey1
+| project
+    domain,
+    status_domain,
+    status_jobs_detail,
+    parity,
+    total_jobs,
+    alerts_jobs,
+    warnings_jobs,
+    saturated_jobs,
+    Dispatch,
+    KPI,
+    Alarmas,
+    startTime,
+    endTime
+| order by domain asc
