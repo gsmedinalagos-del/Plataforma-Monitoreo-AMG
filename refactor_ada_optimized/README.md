@@ -152,6 +152,7 @@ Ejemplo:
 - `var_mlp_ada_alarm`
 - `var_mlp_ada_front`
 - `var_mlp_ada_jobs_detail` *(diagnóstico tabular por job para soporte)*
+- `var_mlp_ada_jobs_detail_legacyfmt` *(diagnóstico con formato `status+real/esperado` para paridad visual legacy)*
 
 ### NOTPII
 - `var_mlp_notpii_autoloader_dev`

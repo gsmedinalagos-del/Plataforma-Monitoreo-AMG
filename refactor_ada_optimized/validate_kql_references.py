@@ -51,6 +51,7 @@ REQUIRED_WRAPPERS = {
     "var_mlp_ada_alarm.kql",
     "var_mlp_ada_front.kql",
     "var_mlp_ada_jobs_detail.kql",
+    "var_mlp_ada_jobs_detail_legacyfmt.kql",
     "var_mlp_notpii_autoloader_dev.kql",
     "var_mlp_notpii_autoloader_uat.kql",
     "var_mlp_notpii_ingesta.kql",
@@ -60,6 +61,7 @@ REQUIRED_WRAPPERS = {
 
 ALLOWED_NON_DOMAIN_WRAPPERS = {
     "var_mlp_ada_jobs_detail.kql": {"fn_prd_mlp_ada_jobs_status_detail"},
+    "var_mlp_ada_jobs_detail_legacyfmt.kql": {"fn_prd_mlp_ada_jobs_status_detail"},
 }
 
 law_files = sorted(LAW.rglob("*.kql"))

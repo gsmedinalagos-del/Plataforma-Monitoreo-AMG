@@ -16,7 +16,7 @@ El mismo layout aplica para `law_functions_body_only/prd/mlp/`.
 
 ## 1) Wrappers activos
 
-- ADA: `var_mlp_ada_global`, `var_mlp_ada_dispatch`, `var_mlp_ada_drillit`, `var_mlp_ada_pi`, `var_mlp_ada_plans`, `var_mlp_ada_blockgrade`, `var_mlp_ada_meteodata`, `var_mlp_ada_kpi`, `var_mlp_ada_alarm`, `var_mlp_ada_front`, `var_mlp_ada_jobs_detail`.
+- ADA: `var_mlp_ada_global`, `var_mlp_ada_dispatch`, `var_mlp_ada_drillit`, `var_mlp_ada_pi`, `var_mlp_ada_plans`, `var_mlp_ada_blockgrade`, `var_mlp_ada_meteodata`, `var_mlp_ada_kpi`, `var_mlp_ada_alarm`, `var_mlp_ada_front`, `var_mlp_ada_jobs_detail`, `var_mlp_ada_jobs_detail_legacyfmt`.
 - NOTPII: `var_mlp_notpii_autoloader_dev`, `var_mlp_notpii_autoloader_uat`, `var_mlp_notpii_ingesta`, `var_mlp_notpii_difusion_global`.
 - SIROSAG: `var_mlp_sirosag_resumen`.
 
