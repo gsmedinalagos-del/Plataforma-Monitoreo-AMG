@@ -15,6 +15,9 @@ let jobs_rollup =
         saturated_jobs = countif(status == "s")
       by domain, TimeGeneratedBin_Chile
     | extend jobs_domain_status = iff(alerts_jobs > 0, "ALERT", "OK");
+let jobs_latest =
+    jobs_rollup
+    | summarize arg_max(TimeGeneratedBin_Chile, *) by domain;
 let domain_dispatch = toscalar(
     fn_prd_mlp_ada_dom_dispatch_status(startTime, endTime)
     | project status = iff(color == "#E53935", "ALERT", "OK")
@@ -38,27 +41,23 @@ let summary_domains =
 let global =
     fn_prd_mlp_ada_dom_global_status(startTime, endTime)
     | project Dispatch, KPI, Alarmas;
-jobs_rollup
-| summarize
-    total_jobs = sum(total_jobs),
-    alerts_jobs = sum(alerts_jobs),
-    warnings_jobs = sum(warnings_jobs),
-    saturated_jobs = sum(saturated_jobs),
-    any_jobs_alert = max(iff(jobs_domain_status == "ALERT", 1, 0))
-  by domain
+jobs_latest
 | join kind=leftouter summary_domains on domain
-| extend status_jobs_detail = iff(any_jobs_alert == 1, "ALERT", "OK")
+| extend status_jobs_detail = jobs_domain_status
 | extend parity = iff(status_jobs_detail == status_domain, "MATCH", "DIFF")
+| extend alert_ratio = iff(total_jobs == 0, real(null), todouble(alerts_jobs) / todouble(total_jobs))
 | extend JoinKey = 1
 | join kind=leftouter (global | extend JoinKey = 1) on JoinKey
 | project-away JoinKey, JoinKey1
 | project
+    TimeGeneratedBin_Chile,
     domain,
     status_domain,
     status_jobs_detail,
     parity,
     total_jobs,
     alerts_jobs,
+    alert_ratio,
     warnings_jobs,
     saturated_jobs,
     Dispatch,
