@@ -1,4 +1,4 @@
-let fn_prd_mlp_ada_dom_alarm_status = (startTime:datetime, endTime:datetime) {
+let fn_prd_mlp_ada_amg_dom_alarm_status = (startTime:datetime, endTime:datetime) {
   let job06_ok = toscalar(
     fn_src_mlp_systemlogs_all(startTime - 35m, endTime)
     | where JobName_s == "mlp-prd-caj-ada-job06"
