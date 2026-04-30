@@ -75,10 +75,12 @@
       "n"
     )
   | extend isAlert = status == "a"
+  | extend expectedVsRealPct = iff(expectedCount == 0, real(null), todouble(realCount) / todouble(expectedCount))
   | extend reason = case(
       status == "a", "No real executions within tolerance window",
       status == "s", "More executions than expected",
       status == "w", "Real executions below expected threshold",
       "OK"
     )
-  | project TimeGeneratedBin_Chile, jobName, jobAlias, domain, expectedCount, realCount, thresholdMinutes, status, isAlert, reason
+  | extend statusText = strcat(status, tostring(realCount), "/", tostring(expectedCount))
+  | project TimeGeneratedBin_Chile, jobName, jobAlias, domain, expectedCount, realCount, expectedVsRealPct, thresholdMinutes, status, statusText, isAlert, reason
